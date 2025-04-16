@@ -1,8 +1,26 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block head_title %}Cars Hub{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+{% endblock %}
+
+{% block header %}
+<header class="container-fluid">
+    <div class="row" id="homepage-header">
+        <div class="col-12 hero">
+            <div class="hero-container text-center">
+                <div class="hero-content animation-element">
+                    <h1 class="display-4 fw-bolder animate__animated animate__lightSpeedInLeft">Cars Hub</h1>
+                    <p class="lead animate__animated animate__lightSpeedInLeft">Fuel Your Passion. Join a Global
+                        Community of Car Enthusiasts.</p>
+                    <a href="#cars-list" aria-label="go to car list"
+                        class="btn btn-lg action-button animate__bounceIn">Discover</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 {% endblock %}
 
 {% block content %}

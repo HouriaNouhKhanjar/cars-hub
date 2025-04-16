@@ -1,5 +1,8 @@
 {% load static %}
 {% url 'home' as home_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_signup' as signup_url %}
+{% url 'account_logout' as logout_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +18,10 @@
         car images, car categories, car enthusiasts platform
         ">
     <meta name="author" content="Houria Khanjar">
-    <title>Cars Hub</title>
+    <title>
+        {% block head_title %}{% endblock head_title %}
+    </title>
+
 
     <!-- Fav icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
@@ -40,8 +46,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-dark position-fixed top-0 w-100" data-bs-theme="dark" id="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#" aria-label="Cars Hub logo (load home page on click)">
-                <img src="{% static 'images/logo.png' %}" alt="Cars Hub logo" width="75" height="45"
+            <a class="navbar-brand p-0" href="#" aria-label="Cars Hub logo (load home page on click)">
+                <img src="{% static 'images/logo.png' %}" alt="Cars Hub logo" width="110" height="66"
                     class="d-inline-block align-text-center">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -52,31 +58,58 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page"
-                            href="#">Home</a>
+                            href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="#" aria-current="page">About Us</a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        {% if request.path != logout_url %}
+                        <button class="btn dropdown-toggle action-button" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{user}}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Go To Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                        </ul>
+                        {% else %}
+                        <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page"
+                            href="{% url 'account_logout' %}">Logout</a>
+                        {% endif %}
+                    </li>
+                    {% else %}
+                    <li class="nav-item dropdown">
+                        <button class="btn dropdown-toggle action-button 
+                            {% if request.path == login_url or request.path == signup_url %}hide{% endif %}" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Login
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'account_login' %}">You Have An Account</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'account_signup' %}">New Account</a></li>
+                        </ul>
+
+                        <a class="nav-link {% if request.path == login_url %}active{% else %}hide{% endif %}"
+                            href="{% url 'account_login' %}">Sign In</a>
+                        <a class="nav-link {% if request.path == signup_url %}active{% else %}hide{% endif %}"
+                            href="{% url 'account_signup' %}">Sign Up</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
     <!-- Header -->
-    <header class="container-fluid">
-        <div class="row" id="homepage-header">
-            <div class="col-12 hero">
-                <div class="hero-container text-center">
-                    <div class="hero-content animation-element">
-                        <h1 class="display-4 fw-bolder animate__animated animate__lightSpeedInLeft">Cars Hub</h1>
-                        <p class="lead animate__animated animate__lightSpeedInLeft">Fuel Your Passion. Join a Global Community of Car Enthusiasts.</p>
-                        <a href="#cars-list" aria-label="go to car list"
-                            class="btn btn-lg action-button animate__bounceIn">Discover</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    {% block header %}{% endblock header %}
 
     <!-- Main Container -->
     <main class="flex-shrink-0 main-bg">
@@ -126,6 +159,7 @@
     <!-- link Font Awesome Kit -->
     <script src="https://kit.fontawesome.com/1e3f59fece.js" crossorigin="anonymous"></script>
     <!-- Custom JS Code -->
+    <script src="{% static 'js/main.js' %}"></script>
     {% block script %}
     {% endblock script %}
 </body>

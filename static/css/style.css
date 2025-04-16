@@ -8,8 +8,8 @@
   /*  */
   --secondary-color: #29a5b3;
   /*  */
-  --highlight-color: #edefea;
-  /* Alabaster */
+  --highlight-color: #e0e2f3;
+  /*  */
   --highlight-color-light: #fffbf8;
   /* Quill Gray */
   --dark-color: #212529;
@@ -43,8 +43,7 @@ h3 {
   font-size: 1rem;
 }
 
-.action-button,
-.action-button-secondary {
+.action-button {
   background-color: transparent;
   color: var(--highlight-color-light);
   border: 2px solid var(--highlight-color-light);
@@ -52,16 +51,30 @@ h3 {
   font-weight: 600;
 }
 
+.action-button-secondary {
+  background-color: var(--primary-color);
+  color: var(--highlight-color-light);
+  border: 2px solid var(--primary-color);
+  border-radius: 0;
+  font-weight: 600;
+}
+
 .action-button:hover {
-  color: var(--primary-color);
+  color: var(--primary-color) !important;
   background-color: var(--highlight-color-light);
   animation: jello;
   animation-duration: 2s;
 }
 
 .action-button-secondary:hover {
-  color: var(--secondary-color);
-  background-color: var(--highlight-color-light);
+  color: var(--primary-color);
+  background-color: transparent;
+  animation: jello;
+  animation-duration: 2s;
+}
+
+.hide {
+  display: none;
 }
 
 /* Navbar */
@@ -96,6 +109,11 @@ h3 {
   color: var(--primary-color);
 }
 
+#navbar .dropdown .action-button {
+  border: unset;
+  padding-top: 0.6rem;
+}
+
 /* Header */
 .hero {
   height: 90vh;
@@ -126,6 +144,51 @@ h3 {
 #cars-list .card-img-top {
   width: 100%;
   height: 300px;
+}
+
+/* Signup */
+#signup-container,
+#login-container,
+#logout-container {
+  margin-top: 5rem;
+  padding: 2rem;
+}
+
+#signup-container .card,
+#login-container .card,
+#logout-container .card {
+  box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
+}
+
+#signup-container #signup-form input,
+#login-container #login-form input,
+#logout-container #logout-form input {
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid;
+}
+
+#login-container #login-form input[type=checkbox]{
+  display: inline;
+  width: 20%;
+}
+
+#signup-container #signup-form input:hover,
+#signup-container #signup-form input:focus,
+#signup-container #signup-form input:active,
+#login-container #login-form input:hover,
+#login-container #login-form input:focus,
+#login-container #login-form input:active
+ {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+#signup-container #signup-form ul {
+  background-color: var(--highlight-color);
+  padding: 1.2rem 2rem;
 }
 
 /* Footer */
@@ -226,13 +289,32 @@ footer {
   .hero-content {
     width: 40%;
   }
+  /* Signup */
+  #signup-container,
+  #login-container,
+  #logout-container {
+    padding: 3rem;
+  }
+  #signup-container .card,
+  #login-container .card,
+  #logout-container .card {
+    width: 80%;
+    margin: auto;
+  }
 }
 
 /* Extra Large devices (laptops/desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   /* navbar */
   #navbar .container-fluid {
-    width: 85%;
+    width: 95%;
+  }
+  /* Signup */
+  #signup-container .card,
+  #login-container .card,
+  #logout-container .card {
+    width: 60%;
+    margin: auto;
   }
   /* footer */
   #footer .footer-container {
