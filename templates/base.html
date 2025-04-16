@@ -87,10 +87,10 @@
                         <button class="btn dropdown-toggle action-button 
                             {% if request.path == login_url or request.path == signup_url %}hide{% endif %}" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Login
+                            Sign In
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'account_login' %}">You Have An Account</a></li>
+                            <li><a class="dropdown-item" href="{% url 'account_login' %}">Sign In</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
