@@ -1,0 +1,30 @@
+.main-bg {
+  margin-top: 6rem;
+  padding: 2rem;
+}
+
+.table {
+  box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
+}
+
+.dropdown button,
+.dropdown ul {
+  width: 100%;
+}
+
+.dropdown ul {
+  padding: 1rem;
+}
+
+.profile-content {
+  border: 1px solid #e4ecf3;
+  box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
+  padding: 1.5rem;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .main-bg {
+    padding: 4rem;
+  }
+}
