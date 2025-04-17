@@ -54,7 +54,11 @@
             <a class="navbar-brand p-0" href="{% url 'home' %}" aria-label="Cars Hub logo (load home page on click)">
                 <img src="{% static 'images/cars-hub-logo.png' %}" alt="Cars Hub logo" width="100" height="66"
                     class="d-inline-block align-text-center">
+                {% if user.is_authenticated %}
+                <span class="d-lg-none">{{user}}</span>
+                {% endif %}
             </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa-solid fa-circle-chevron-down"></i>
@@ -115,9 +119,33 @@
 
     <!-- Header -->
     {% block header %}{% endblock header %}
-    
+
     <div class="container-fluid flex-grow-2">
         <div class="row flex-wrap">
+            <!-- displaying Django messages -->
+            <div aria-live="polite" aria-atomic="true" class="position-relative">
+                <!-- Position it: -->
+                <!-- - `.toast-container` for spacing between toasts -->
+                <!-- - `top-0` & `end-0` to position the toasts in the upper right corner -->
+                <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+                <div class="toast-container top-0 end-0 p-3">
+
+                    <!-- Then put toasts within -->
+                    {% for message in messages %}
+                    <div class="toast show text-bg-{{ message.tags }}" role="alert" aria-live="assertive"
+                        aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto">Response</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message | safe }}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
             {% block content %}
             <!-- Content Goes here -->
             {% endblock content %}

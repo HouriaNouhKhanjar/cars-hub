@@ -1,29 +1,23 @@
 {% extends "profile/profile-base.html" %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 
 {% block profile_content %}
-<h2>Edit Profile</h2>
- <div id="profile-image">
+<div id="profile-image">
   {% if "placeholder" in user.user_profile.profile_image.url %}
-  <img src="{% static 'images/nobody.jpg' %}" width="75%"
-    alt="placeholder image" >
+  <img src="{% static 'images/nobody.jpg' %}" width="75%" alt="placeholder image">
   {% else %}
-  <img src="{{ user.user_profile.profile_image.url }}" width="75%"
-    alt="profile image">
+  <img src="{{ user.user_profile.profile_image.url }}" width="75%" alt="profile image">
   {% endif %}
 </div>
-<form method="POST" enctype="multipart/form-data" id="profile-form"> 
+<h2>Edit Profile</h2>
+<form method="POST" enctype="multipart/form-data" id="profile-form">
   {% csrf_token %}
-  <fieldset>
-    <legend>User Info</legend>
-    {{ user_form.as_p }}
-  </fieldset>
+  {{ user_form | crispy }}
+
   <hr class="my-4">
-   <fieldset>
-    <legend>Profile Info</legend>
-    {{ profile_form.as_p }}
-  </fieldset>
+  {{ profile_form | crispy }}
+
   <button type="submit" class="action-button-secondary">Update Profile</button>
 </form>
 {% endblock %}

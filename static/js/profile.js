@@ -1,23 +1,27 @@
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll(".clickable-row").forEach(function(row) {
-    row.addEventListener("click", function() {
+document.addEventListener("DOMContentLoaded", function () {
+  /**
+   * Go to link on table row click
+   */
+  document.querySelectorAll(".clickable-row").forEach(function (row) {
+    row.addEventListener("click", function () {
       window.location = row.dataset.href;
     });
   });
 
-  function getLabel(elem) {
-    return Array.from(elem.parentNode.children).filter(
-      (child) => child.tagName == 'LABEL'
-    );
+  /** 
+   * code for remove duplicate image input
+   */
+  function removeExtraImageInput(elem) {
+    for (child of elem.children) {
+      if (child.classList.contains("input-group")) {
+        elem.removeChild(child);
+      }
+    }
   }
 
-  const inputImage = document.getElementById('id_profile_image');
+  const inputImage = document.getElementById("div_id_profile_image");
 
-  if(inputImage) {
-    var label = getLabel(inputImage)[0];
-    var parent = inputImage.parentNode;
-    parent.textContent = "";
-    parent.appendChild(label);
-    parent.appendChild(inputImage);
+  if (inputImage) {
+    removeExtraImageInput(inputImage);
   }
 });

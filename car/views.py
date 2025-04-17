@@ -20,12 +20,11 @@ def profile(request):
     """
     user = request.user
     profile, created = UserProfile.objects.get_or_create(user=user)
-    # profile = user.user_profile
-    # profile = user.profile  # assuming OneToOne relationship exists
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        profile_form = ProfileForm(request.POST, request.FILES,
+                                   instance=profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()

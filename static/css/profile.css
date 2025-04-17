@@ -1,8 +1,12 @@
 /* Profile Container */
-.main-bg,
 #profile-container,
 #profile-container .row {
   padding: unset !important;
+}
+
+.main-bg {
+  padding: unset;
+  margin: 8rem 0 5rem;
 }
 
 /* Profile Base */
@@ -27,7 +31,7 @@
 
 /* Profile form */
 #profile-container #profile-image {
-  text-align: right;
+  text-align: center;
 }
 
 #profile-image img {
@@ -49,6 +53,11 @@
   width: 100%;
   border: none;
   border-bottom: 1px solid;
+  border-radius: unset;
+  -webkit-border-radius: unset;
+  -moz-border-radius: unset;
+  -ms-border-radius: unset;
+  -o-border-radius: unset;
 }
 
 #profile-form input:hover,
