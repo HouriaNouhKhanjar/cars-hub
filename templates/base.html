@@ -51,7 +51,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-dark position-fixed top-0 w-100" data-bs-theme="dark" id="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand p-0" href="#" aria-label="Cars Hub logo (load home page on click)">
+            <a class="navbar-brand p-0" href="{% url 'home' %}" aria-label="Cars Hub logo (load home page on click)">
                 <img src="{% static 'images/cars-hub-logo.png' %}" alt="Cars Hub logo" width="100" height="66"
                     class="d-inline-block align-text-center">
             </a>
@@ -117,7 +117,7 @@
     {% block header %}{% endblock header %}
     
     <div class="container-fluid flex-grow-2">
-        <div class="row flex-nowrap">
+        <div class="row flex-wrap">
             {% block content %}
             <!-- Content Goes here -->
             {% endblock content %}

@@ -140,6 +140,12 @@ h3 {
     url("../images/hero.webp") no-repeat center/cover;
 }
 
+/* Main section */
+.main-bg {
+  padding: 1rem;
+  margin: 5rem 0;
+}
+
 /* Cars List */
 #cars-list .card-img-top {
   width: 100%;
@@ -150,8 +156,7 @@ h3 {
 #signup-container,
 #login-container,
 #logout-container {
-  margin-top: 5rem;
-  padding: 2rem;
+  margin: 5rem 0;
 }
 
 #signup-container .card,
@@ -169,7 +174,7 @@ h3 {
   border-bottom: 1px solid;
 }
 
-#login-container #login-form input[type=checkbox]{
+#login-container #login-form input[type="checkbox"] {
   display: inline;
   width: 20%;
 }
@@ -179,8 +184,7 @@ h3 {
 #signup-container #signup-form input:active,
 #login-container #login-form input:hover,
 #login-container #login-form input:focus,
-#login-container #login-form input:active
- {
+#login-container #login-form input:active {
   border: none;
   outline: none;
   border-bottom: 2px solid var(--primary-color);
@@ -191,7 +195,8 @@ h3 {
   padding: 1.2rem 2rem;
 }
 
-.errorlist {
+#signup-container .errorlist,
+#login-container .errorlist {
   color: var(--primary-color);
 }
 
@@ -274,6 +279,12 @@ footer {
       url("../images/hero.webp") no-repeat center/cover;
   }
 
+  /* Main section */
+  .main-bg {
+    margin-top: 6rem;
+    padding: 1rem;
+  }
+
   /* footer */
   footer {
     padding: 4rem;
@@ -293,6 +304,10 @@ footer {
   .hero-content {
     width: 40%;
   }
+  /* main */
+  .main-bg {
+    margin: 6rem 0;
+  }
   /* Signup */
   #signup-container,
   #login-container,
@@ -302,7 +317,7 @@ footer {
   #signup-container .card,
   #login-container .card,
   #logout-container .card {
-    width: 80%;
+    width: 70%;
     margin: auto;
   }
 }
