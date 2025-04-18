@@ -87,7 +87,7 @@ JAZZMIN_SETTINGS = {
 
 # Custom Colors
 JAZZMIN_UI_TWEAKS = {
-    "theme": "flatly",
+    "theme": "journal",
 }
 
 MIDDLEWARE = [

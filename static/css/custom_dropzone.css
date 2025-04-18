@@ -1,0 +1,33 @@
+.dropzone-wrapper {
+    margin-bottom: 15px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+}
+
+.dropzone-box {
+    text-align: center;
+    cursor: pointer;
+    color: #777;
+}
+
+.dropzone-box.hover {
+    background-color: #f0f0f0;
+    border-color: #007bff;
+}
+
+.delete {
+    display: none; /* hide default delete checkbox */
+}
+
+.delete-btn {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 4px 10px;
+    background: #dc3545;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
