@@ -37,6 +37,7 @@ ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +64,31 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+# Add custom theme to Admin panel
+JAZZMIN_SETTINGS = {
+    "site_title": "Cars Hub Admin",
+    "site_header": "Cars Hub Dashboard",
+    "site_brand": "Cars Hub",
+    "site_icon": "images/favicon.ico",
+    
+    # Copyright on the footer
+    "copyright": "<a href='/' target='_blank'>Cars Hub &copy; 2025</a>",
+    
+    # Additional links to include in the user menu on the top right
+    "usermenu_links": [
+        {"name": "View Site", "url": "/", "icon": 'fas fa-chart-bar'},
+    ],
+    
+    # Hide these models when generating side menu
+    "hide_models": ['auth.group', 'socialaccount.socialaccount',
+                    'socialaccount.socialapp','socialaccount.socialtoken',
+                    'sites.site','django_summernote.attachment'],
+}
+
+# Custom Colors
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
