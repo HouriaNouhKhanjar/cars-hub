@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.db.models import Q
 from django.contrib import messages
 from .forms import UserForm, ProfileForm
 from .models import UserProfile
+from .models import Car, Category
 
 
 # Create your views here.
@@ -12,6 +15,7 @@ def index(request):
     Load the Homepage
     """
     return render(request, 'car/index.html')
+
 
 @login_required
 def profile(request):
@@ -44,19 +48,46 @@ def profile(request):
         'profile_form': profile_form
     })
 
-@login_required
-def cars_list(request):
-    """
-    Display users cars list
-    """
-    return render(request, 'profile/cars-list.html')
 
-@login_required
-def car_edit(request):
-    """
-    Manage users car
-    """
-    return render(request, 'profile/cars-edit.html')
+class CarListView(LoginRequiredMixin, ListView):
+    model = Car
+    template_name = 'profile/cars-list.html'
+    context_object_name = 'cars'
+    paginate_by = 10 
+
+    def get_queryset(self):
+        queryset = Car.objects.filter(owner=self.request.user)
+
+        # Search functionality based on title or model or brand
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) | 
+                Q(model__icontains=search_query) |
+                Q(brand__icontains=search_query)
+            )
+
+        # Filter by category
+        category_filter = self.request.GET.get('category', '')
+        if category_filter:
+            queryset = queryset.filter(category__id=category_filter)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+    
+        # Add a list of categories to filter by
+        context['categories'] = Category.objects.all()
+     
+        # Add search query to preserve the search term
+        context['search'] = self.request.GET.get('search', '')
+    
+        # Add selected category to filter
+        context['selected_category'] = self.request.GET.get('category', '')
+
+        return context
+
 
 @login_required
 def liking_list(request):
