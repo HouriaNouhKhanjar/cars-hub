@@ -68,27 +68,27 @@ class Car(models.Model):
 class CarImage(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')
     image = CloudinaryField('image', default='placeholder')
-        
+    
+    def get_cloudinary_public_id(self):
+        """
+        Extract Cloudinary public ID from the image URL.
+        """
+        try:
+            url = self.image.url
+            path = urlparse(url).path  # e.g., /v1/car_images/filename.jpg
+            public_id = os.path.splitext(path)[0].strip('/')  # removes extension
+            return public_id
+        except Exception as e:
+            print("Failed to extract public ID:", e)
+            return None
 
-def get_cloudinary_public_id(image_field):
-    """
-    Extract Cloudinary public ID from the image URL.
-    """
-    try:
-        url = image_field.url
-        path = urlparse(url).path  # e.g., /v1/car_images/filename.jpg
-        public_id = os.path.splitext(path)[0].strip('/')  # removes extension
-        return public_id
-    except Exception as e:
-        print("Failed to extract public ID:", e)
-        return None
-
+    def __str__(self):
+        return f"{self.get_cloudinary_public_id()}"
 
 
 @receiver(post_delete, sender=CarImage)
 def delete_cloudinary_image(sender, instance, **kwargs):
     if instance.image:
-        public_id = get_cloudinary_public_id(instance.image)
+        public_id = instance.image.get_cloudinary_public_id()
         if public_id:
             cloudinary.uploader.destroy(public_id)
-
