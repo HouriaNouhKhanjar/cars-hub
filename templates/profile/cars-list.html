@@ -4,6 +4,9 @@
 
 {% block profile_content %}
 <h2>My Cars</h2>
+<div class="text-end py-3">
+  <a href="{% url 'car_add' %}" class="btn action-button-secondary">Add New Car</a>
+</div>
 
 <!-- Search & Filter Form -->
 <form method="GET" class="row g-3 align-items-end mb-4">
@@ -25,7 +28,7 @@
   </div>
 
   <div class="col-md-3">
-    <button type="submit" class="btn action-button-secondary w-100">Filter</button>
+    <button type="submit" class="btn action-button-accent w-100">Filter</button>
   </div>
 </form>
 
@@ -55,8 +58,12 @@
         </td>
         <td>{{ car.category.name }}</td>
         <td>
-          <a href="#" class="btn btn-sm btn-outline-success">Edit</a>
-          <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+          <a href="#" class="btn btn-sm btn-outline-success">
+            <i class="fa-solid fa-pen"></i>
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-danger">
+            <i class="fa-solid fa-trash"></i>
+          </a>
         </td>
       </tr>
       {% empty %}

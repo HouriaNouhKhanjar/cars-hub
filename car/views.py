@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib import messages
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, CarForm
 from .models import UserProfile
-from .models import Car, Category
+from .models import Car, Category, CarImage
 
 
 # Create your views here.
@@ -87,6 +88,25 @@ class CarListView(LoginRequiredMixin, ListView):
         context['selected_category'] = self.request.GET.get('category', '')
 
         return context
+
+
+class CarCreateView(LoginRequiredMixin, CreateView):
+    model = Car
+    form_class = CarForm
+    template_name = 'profile/add-car.html'
+    success_url = reverse_lazy('car_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        response = super().form_valid(form)
+        images = self.request.FILES.getlist('images')
+        for img in images:
+            CarImage.objects.create(car=self.object, image=img)
+        messages.add_message(
+                    self.request, messages.SUCCESS,
+                    'Car was successfuly added.'
+            )
+        return response
 
 
 @login_required

@@ -1,0 +1,40 @@
+{% extends "profile/profile-base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block profile_content %}
+<div class="container my-4">
+    <h2>Add New Car</h2>
+    {% if form.title.errors %}
+    <div class="text-danger">
+        {{ form.title.errors.as_text }}
+    </div>
+    {% endif %}
+    <div>
+        <form method="post" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
+            <!-- Car Fields -->
+    
+            {{ form | crispy }}
+    
+            <!-- Drag & Drop Upload -->
+            <div>
+                <label for="id_image" class="form-label">Upload Car Images</label>
+                <div id="drop-area" class="border border-primary rounded p-4 text-center" style="cursor: pointer;">
+                    <p class="mb-2">Drag & Drop Images Here or Click to Browse</p>
+                    <input type="file" id="id_image" name="images" accept="image/*" multiple hidden>
+                    <button type="button" class="btn btn-outline-primary"
+                        onclick="document.getElementById('id_image').click();">Select Images</button>
+                    <div id="preview" class="row mt-3 gx-2 gy-2"></div>
+                </div>
+            </div>
+    
+            <div>
+                <button type="submit" class="btn btn-secondary">Add Car</button>
+                <a href="{% url 'car_list' %}" class="btn btn-accent">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
