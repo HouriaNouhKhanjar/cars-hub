@@ -138,15 +138,18 @@
 
                     <!-- Then put toasts within -->
                     {% for message in messages %}
-                    <div class="toast show text-bg-{{ message.tags }}" role="alert" aria-live="assertive"
+                    <div class="toast response-toast show text-bg-{{ message.tags }}" role="alert" aria-live="assertive"
                         aria-atomic="true">
-                        <div class="toast-header">
-                            <strong class="me-auto">Response</strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <div>
+                            <div class="toast-header">
+                                <strong class="me-auto">Response</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                {{ message | safe }}
+                            </div>
                         </div>
-                        <div class="toast-body">
-                            {{ message | safe }}
-                        </div>
+                        
                     </div>
                     {% endfor %}
 

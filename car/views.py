@@ -1,13 +1,20 @@
+import cloudinary.uploader
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
-from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
 from django.db.models import Q
 from django.contrib import messages
 from .forms import UserForm, ProfileForm, CarForm
-from .models import UserProfile
-from .models import Car, Category, CarImage
+from .models import UserProfile, Car, Category, CarImage
+
+
+class OwnerRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user
 
 
 # Create your views here.
@@ -93,7 +100,7 @@ class CarListView(LoginRequiredMixin, ListView):
 class CarCreateView(LoginRequiredMixin, CreateView):
     model = Car
     form_class = CarForm
-    template_name = 'profile/add-car.html'
+    template_name = 'profile/car-form.html'
     success_url = reverse_lazy('car_list')
 
     def form_valid(self, form):
@@ -107,6 +114,51 @@ class CarCreateView(LoginRequiredMixin, CreateView):
                     'Car was successfuly added.'
             )
         return response
+
+
+class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
+    model = Car
+    form_class = CarForm
+    template_name = 'profile/car-form.html'
+    success_url = reverse_lazy('car_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['edit_mode'] = True
+        # access related CarImage
+        context['car_images'] = self.object.images.all()
+        return context
+
+    def form_valid(self, form):
+        images = self.request.FILES.getlist('images')
+        for img in images:
+            CarImage.objects.create(car=self.object, image=img)  
+        messages.success(self.request, "Car updated successfully!")
+        return super().form_valid(form)
+
+
+@login_required
+def delete_car_image(request, pk):
+    if request.method not in ["POST", "DELETE"]:
+        return HttpResponseNotAllowed(["POST", "DELETE"])
+    
+    car_image = get_object_or_404(CarImage, pk=pk)
+
+    # Check if the logged-in user is the owner of the related car
+    if car_image.car.owner != request.user:
+        return HttpResponseForbidden(
+            "You do not have permission to delete this image.")
+
+    try:
+        # Optional: delete from Cloudinary or do extra cleanup
+        car_image.delete()
+        messages.success(request, "Image deleted from Cloudinary successfully.")
+        return JsonResponse({'success': True})
+    except Exception as e:
+        messages.error(request, f"Cloudinary image deletion failed: {e}")
+        return JsonResponse({'error': f'Cloudinary deletion failed: {e}'},
+                            status=500)
+
 
 
 @login_required

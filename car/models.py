@@ -89,6 +89,6 @@ class CarImage(models.Model):
 @receiver(post_delete, sender=CarImage)
 def delete_cloudinary_image(sender, instance, **kwargs):
     if instance.image:
-        public_id = instance.image.get_cloudinary_public_id()
+        public_id = instance.get_cloudinary_public_id()
         if public_id:
             cloudinary.uploader.destroy(public_id)

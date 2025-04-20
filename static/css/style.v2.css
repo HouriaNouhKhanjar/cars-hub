@@ -101,6 +101,14 @@ h3 {
   display: none;
 }
 
+.text-primary {
+  color: var(--primary-color)!important;
+}
+
+.text-accent {
+  color: var(--secondary-color);
+}
+
 /* Navbar */
 #navbar {
   box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
