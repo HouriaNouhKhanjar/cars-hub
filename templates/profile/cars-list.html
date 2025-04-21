@@ -35,6 +35,7 @@
 <!-- Car Table -->
 <div class="table-responsive">
   <table class="table table-striped table-bordered align-middle text-center">
+    {% csrf_token %}
     <thead class="table-dark">
       <tr>
         <th>#</th>
@@ -46,7 +47,7 @@
     </thead>
     <tbody>
       {% for car in cars %}
-      <tr>
+      <tr id="row-car-{{car.pk}}">
         <td>{{ forloop.counter }}</td>
         <td>{{ car.title }}</td>
         <td>
@@ -58,10 +59,14 @@
         </td>
         <td>{{ car.category.name }}</td>
         <td>
-          <a href="{% url 'car_edit' car.pk %}" class="btn btn-sm btn-outline-success">
+          <a href="{% url 'car_edit' car.pk %}" 
+             class="btn btn-sm btn-outline-success">
             <i class="fa-solid fa-pen"></i>
           </a>
-          <a href="#" class="btn btn-sm btn-outline-danger">
+          <a class="delete-car-btn btn btn-sm btn-outline-danger"
+          data-bs-toggle="modal" data-bs-target="#confirm-modal"
+           data-car-id="{{ car.pk }}"
+           href="#">
             <i class="fa-solid fa-trash"></i>
           </a>
         </td>

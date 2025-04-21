@@ -10,6 +10,8 @@ urlpatterns = [
          name='car_edit'),
     path('car/image/<int:pk>/delete/', car_views.delete_car_image,
          name='delete_car_image'),
-    path('liking-list/', car_views.liking_list, name='liking_list'),
+    path('car-delete/<int:pk>/', car_views.delete_car,
+         name='car_delete'),
+    path('likes-list/', car_views.likes_list, name='likes_list'),
     path('', car_views.index, name='home'),
 ]

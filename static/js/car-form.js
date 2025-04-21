@@ -26,7 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
           "X-Requested-With": "XMLHttpRequest"
         }
       })
-        .then((res) => res.json())
+        .then((res) =>  {
+          if (!res.ok) {
+            closeModal();
+            alert(res.statusText);
+            throw new Error(`HTTP error ${res.status}`);
+          }
+          return res.json();
+        })
         .then((data) => {
           if (data.success) {
             // remove image preview

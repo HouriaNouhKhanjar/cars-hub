@@ -1,10 +1,9 @@
-import cloudinary.uploader
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
-from django.http import HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
+from django.http import JsonResponse
 from django.db.models import Q
 from django.contrib import messages
 from .forms import UserForm, ProfileForm, CarForm
@@ -135,19 +134,40 @@ class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
             CarImage.objects.create(car=self.object, image=img)  
         messages.success(self.request, "Car updated successfully!")
         return super().form_valid(form)
+    
+    
+@login_required
+def delete_car(request, pk):
+    if request.method not in ["POST", "DELETE"]:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    
+    car = get_object_or_404(Car, pk=pk)
+
+    # Check if the logged-in user is the owner of the related car
+    if car.owner != request.user:
+        return JsonResponse({'error': 'Forbidden'}, status=403)
+
+    try:
+        # Optional: delete from Cloudinary or do extra cleanup
+        car.delete()
+        messages.success(request, "Car deleted from Cloudinary successfully.")
+        return JsonResponse({'success': True})
+    except Exception as e:
+        messages.error(request, f"Car deletion failed: {e}")
+        return JsonResponse({'error': f'Car deletion failed: {e}'},
+                            status=500)
 
 
 @login_required
 def delete_car_image(request, pk):
     if request.method not in ["POST", "DELETE"]:
-        return HttpResponseNotAllowed(["POST", "DELETE"])
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
     
     car_image = get_object_or_404(CarImage, pk=pk)
 
     # Check if the logged-in user is the owner of the related car
     if car_image.car.owner != request.user:
-        return HttpResponseForbidden(
-            "You do not have permission to delete this image.")
+        return JsonResponse({'error': 'Forbidden'}, status=403)
 
     try:
         # Optional: delete from Cloudinary or do extra cleanup
@@ -162,8 +182,8 @@ def delete_car_image(request, pk):
 
 
 @login_required
-def liking_list(request):
+def likes_list(request):
     """
-    display users liking
+    display users likes
     """
-    return render(request, 'profile/liking-list.html')
+    return render(request, 'profile/likes-list.html')
