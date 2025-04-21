@@ -143,13 +143,14 @@
                         <div>
                             <div class="toast-header">
                                 <strong class="me-auto">Response</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="toast-body">
                                 {{ message | safe }}
                             </div>
                         </div>
-                        
+
                     </div>
                     {% endfor %}
 
@@ -160,6 +161,31 @@
             {% endblock content %}
         </div>
     </div>
+
+    <!-- confirmation modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this image?
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmDelete" class="btn action-button-secondary">Delete</button>
+                    <button class="btn action-button-accent" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="overlay-loader" class="overlay-loader">
+        <div id="loader">
+            <div class="spinner-border text-primary" role="status"></div>
+        </div>
+    </div>
+
 
     <!-- Footer -->
     <footer class="mt-auto">

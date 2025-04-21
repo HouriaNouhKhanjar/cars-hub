@@ -11,14 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-
-
   // when the delete is confirmed then call delete_car_image url
   document
     .getElementById("confirmDelete")
     .addEventListener("click", function () {
       if (!selectedImageId) return;
-      loaderToggel();
+      loaderToggel(false);
 
       fetch(`/car/image/${selectedImageId}/delete/`, {
         method: "DELETE",
@@ -35,21 +33,20 @@ document.addEventListener("DOMContentLoaded", function () {
             document
               .getElementById(`image-preview-${selectedImageId}`)
               .remove(false);
-            // close model
-            const modal = bootstrap.Modal.getInstance(
-              document.getElementById("delete-modal")
-            );
-            modal.hide();
+            // closeModal function is defined in main.js
+            closeModal();
             // show success message
             showToast("Image deleted successfully!");
           } else {
             alert("Error deleting image");
           }
-        }).catch(error => {
-            console.error('Error:', error);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
         })
         .finally(() => {
-           loaderToggel(true);
+          // loaderToggel function is defined in main.js
+          loaderToggel(true);
         });
     });
 
@@ -132,14 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
     input.files = fileBuffer.files;
   }
 
-  // loader show/hide
-  function loaderToggel(hide) {
-     const loader = document.getElementById("loader");
-     const modal = document.getElementById("delete-modal");
-     loader.style.visibility = hide? 'hidden' : 'visible';
-     modal.style.zIndex = hide? '1100' : '10';
-  }
-
   // show success message as a bootstrap toast
   function showToast(message) {
     const toast = document.createElement("div");
@@ -155,4 +144,19 @@ document.addEventListener("DOMContentLoaded", function () {
     new bootstrap.Toast(toast, { delay: 4500 }).show();
     setTimeout(() => toast.remove(), 5000);
   }
+
+     //close modal
+     function closeModal() {
+      const modal = bootstrap.Modal.getInstance(
+        document.getElementById("confirm-modal")
+      );
+      modal.hide();
+    }
+    // loader show/hide
+    function loaderToggel(hide) {
+      const loader = document.getElementById("loader");
+      const modal = document.getElementById("confirm-modal");
+      loader.style.visibility = hide ? "hidden" : "visible";
+      modal.style.zIndex = hide ? "1100" : "10";
+    }
 });
