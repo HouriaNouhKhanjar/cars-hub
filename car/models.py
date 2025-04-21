@@ -33,12 +33,13 @@ class Category(models.Model):
     """
     name = models.CharField(max_length=200)
     created_on = models.DateTimeField(auto_now_add=True)
+    image = CloudinaryField('image', default='placeholder')
     
     def __str__(self):
         return f"{self.name}"
     
     class Meta:
-        ordering = ["created_on"]
+        ordering = ["-created_on"]
 
         
 class Car(models.Model):
@@ -62,7 +63,7 @@ class Car(models.Model):
         return f"{self.title} | created on: {self.created_on.strftime('%Y-%m-%d %H:%M')}"
     
     class Meta:
-        ordering = ["created_on"]
+        ordering = ["-created_on"]
         
 
 class CarImage(models.Model):
