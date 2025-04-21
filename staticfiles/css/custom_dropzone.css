@@ -1,0 +1,49 @@
+.custom-dropzone-wrapper {
+    position: relative;
+    border: 2px dashed #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.custom-dropzone-box {
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.preview-image {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.delete-image-btn {
+    margin-top: 10px;
+    display: inline-block;
+    background-color: rgb(121, 14, 14);
+    color: white;
+    border: unset;
+    outline: unset;
+}
+
+.delete-image-btn:hover,
+.delete-image-btn:focus,
+.btn-danger:not(:disabled):not(.disabled):active { 
+    background-color: transparent;
+    color: rgb(121, 14, 14);;
+    border: 1px solid rgb(121, 14, 14);;
+    outline: unset;
+}
+
+
+.card-header {
+    display: none;
+}
+
+.custom-dropzone-box {
+    display: none;
+}

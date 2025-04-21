@@ -67,6 +67,18 @@ h3 {
   -o-border-radius: 0;
 }
 
+.action-button-accent {
+  background-color: var(--secondary-color);
+  color: var(--highlight-color-light);
+  border: 2px solid var(--secondary-color);
+  border-radius: 0;
+  font-weight: 600;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+}
+
 .action-button:hover {
   color: var(--primary-color) !important;
   background-color: var(--highlight-color-light);
@@ -75,7 +87,8 @@ h3 {
   -webkit-animation: jello;
 }
 
-.action-button-secondary:hover {
+.action-button-secondary:hover,
+.action-button-accent:hover {
   color: var(--primary-color);
   background-color: transparent;
   animation: jello;
@@ -85,6 +98,34 @@ h3 {
 
 .hide {
   display: none;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-accent {
+  color: var(--secondary-color);
+}
+
+/* Loader */
+.overlay-loader {
+  position: fixed;
+  z-index: 1050; /* Above most Bootstrap elements */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+}
+
+.overlay-loader .spinner-border {
+  width: 4rem;
+  height: 4rem;
 }
 
 /* Navbar */

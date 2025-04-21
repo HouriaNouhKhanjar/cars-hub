@@ -77,6 +77,23 @@
   color: var(--primary-color);
 }
 
+/* Cars Add */
+.summernote-div {
+  width: 100% !important;
+  height: unset;
+}
+
+#id_description_iframe {
+  width: 100% !important;
+}
+
+#id_description_iframe > body > div.note-editor.note-frame.panel.panel-default {
+  width: 100% !important;
+}
+
+#drop-area.pointer {
+  cursor: pointer;
+}
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
