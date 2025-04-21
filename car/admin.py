@@ -1,6 +1,8 @@
 from django_summernote.admin import SummernoteModelAdmin
 from django.utils.html import format_html
 from django.contrib import admin
+from django import forms
+from .widgets import DragAndDropWidget
 from .models import Category, Car, CarImage
 
 
@@ -10,29 +12,21 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_on',)
     search_fields = ['name']
     list_filter = ('created_on',)
+    
+
+class CarImageInlineForm(forms.ModelForm):
+    class Meta:
+        model = CarImage
+        fields = '__all__'
+        widgets = {
+            'image': DragAndDropWidget(),
+        }
 
 
 class CarImageInline(admin.StackedInline):
     model = CarImage
+    form = CarImageInlineForm
     extra = 1
-    readonly_fields = ['preview']
-
-    class Media:
-        js = [
-            'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js',
-            'js/custom_dropzone.js',
-        ]
-        css = {
-            'all': [
-                'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css',
-                'css/custom_dropzone.css',
-            ]
-        }
-
-    def preview(self, obj):
-        if obj.image:
-            return format_html('<img src="{}" style="max-height: 150px;" />', obj.image.url)
-        return "No image"
 
 
 @admin.register(Car)
