@@ -47,7 +47,8 @@
     </thead>
     <tbody>
       {% for car in cars %}
-      <tr id="row-car-{{car.pk}}">
+      <tr id="row-car-{{car.pk}}"
+      class="{% if not car.approved %}disabled-row{% endif %}">
         <td>{{ forloop.counter }}</td>
         <td>{{ car.title }}</td>
         <td>
@@ -59,6 +60,7 @@
         </td>
         <td>{{ car.category.name }}</td>
         <td>
+          {% if car.approved %}
           <a href="{% url 'car_edit' car.pk %}" 
              class="btn btn-sm btn-outline-success">
             <i class="fa-solid fa-pen"></i>
@@ -69,6 +71,9 @@
            href="#">
             <i class="fa-solid fa-trash"></i>
           </a>
+          {% else %}
+            <span class="text-primary">Need Admin Approval</span>
+          {% endif %}
         </td>
       </tr>
       {% empty %}
@@ -81,43 +86,27 @@
 </div>
 
 <!-- Pagination -->
-{% if cars.has_other_pages %}
+{% if is_paginated %}
 <nav>
   <ul class="pagination justify-content-center">
-    {% if cars.has_previous %}
-    <li class="page-item">
-      <a class="page-link" href="?page=1&search={{ search }}&category={{ selected_category }}">&laquo; First</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link"
-        href="?page={{ cars.previous_page_number }}&search={{ search }}&category={{ selected_category }}">Previous</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled"><span class="page-link">First</span></li>
-    <li class="page-item disabled"><span class="page-link">Previous</span></li>
-    {% endif %}
-
-    <li class="page-item disabled">
-      <span class="page-link">
-        Page {{ cars.number }} of {{ cars.paginator.num_pages }}
-      </span>
-    </li>
-
-    {% if cars.has_next %}
-    <li class="page-item">
-      <a class="page-link"
-        href="?page={{ cars.next_page_number }}&search={{ search }}&category={{ selected_category }}">Next</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link"
-        href="?page={{ cars.paginator.num_pages }}&search={{ search }}&category={{ selected_category }}">Last
-        &raquo;</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled"><span class="page-link">Next</span></li>
-    <li class="page-item disabled"><span class="page-link">Last</span></li>
-    {% endif %}
-  </ul>
+{% if page_obj.has_previous %}
+<li class="page-item">
+  <a class="page-link action-button-accent"
+   href="?page={{ page_obj.previous_page_number }}&search={{ search }}&category={{ selected_category }}">
+   Previous
+   </a>
+</li>
+{% endif %}
+<li class="page-item p-2"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </li>
+{% if page_obj.has_next %}
+<li class="page-item">
+  <a class="page-link action-button-accent" 
+  href="?page={{ page_obj.next_page_number }}&search={{ search }}&category={{ selected_category }}">
+    Next
+    </a>
+</li>
+{% endif %}
+</ul>
 </nav>
 {% endif %}
 </div>
