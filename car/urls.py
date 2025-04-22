@@ -12,6 +12,8 @@ urlpatterns = [
          name='delete_car_image'),
     path('car-delete/<int:pk>/', car_views.delete_car,
          name='car_delete'),
+    path('car-detail/<int:pk>/', car_views.CarDetailView.as_view(),
+         name='car_detail'),
     path('likes-list/', car_views.likes_list, name='likes_list'),
     path('', car_views.CarListView.as_view(), name='home'),
 ]

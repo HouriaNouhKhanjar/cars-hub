@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
@@ -137,7 +137,18 @@ class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
             CarImage.objects.create(car=self.object, image=img)  
         messages.success(self.request, "Car updated successfully!")
         return super().form_valid(form)
-   
+
+
+class CarDetailView(DetailView):
+    model = Car
+    template_name = 'car/car-detail.html'
+    context_object_name = 'car'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['images'] = self.object.images.all()
+        return context
+
    
 @login_required
 def delete_car(request, pk):

@@ -101,23 +101,25 @@
                 <div class="d-flex flex-wrap">
                     {% for car in cars %}
                     <div class="col-md-6 col-lg-4 p-3">
-                        <div class="card car-item text-start">
-                            <img class="card-img"
-                                src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url}} {% endif %}"
-                                alt="Car image cap" class="img-fluid">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title fs-6">{{car.title}}</h4>
-                                <p class="card-text">
-                                    <small>
-                                        Posted by: {{ car.owner.username }}
-                                    </small>
-                                    <br>
-                                    <small>
-                                        {{ car.created_on|timesince }} ago
-                                    </small>
-                                </p>
+                        <a href="{% url 'car_detail' car.pk %}">
+                            <div class="card car-item text-start">
+                                <img class="card-img"
+                                    src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url}} {% endif %}"
+                                    alt="Car image cap" class="img-fluid">
+                                <div class="card-img-overlay">
+                                    <h4 class="card-title fs-6">{{car.title}}</h4>
+                                    <p class="card-text">
+                                        <small>
+                                            Posted by: {{ car.owner.username }}
+                                        </small>
+                                        <br>
+                                        <small>
+                                            {{ car.created_on|timesince }} ago
+                                        </small>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                         </a>
                     </div>
                     {% endfor %}
                 </div>

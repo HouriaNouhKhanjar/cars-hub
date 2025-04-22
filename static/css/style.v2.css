@@ -314,6 +314,22 @@ h3 {
   color: var(--primary-color);
 }
 
+/* Car detail */
+.car-detail {
+  margin-top: 6rem;
+  padding: 2rem;
+}
+
+.car-detail .carousel-indicators button.thumbnail {
+  width: 100px;
+}
+.car-detail .carousel-indicators button.thumbnail:not(.active) {
+  opacity: 0.7;
+}
+.car-detail .carousel-indicators {
+  position: static;
+}
+
 /* Footer */
 footer {
   box-shadow: 0px 0px 6px rgb(0 0 0 / 70%);
@@ -403,6 +419,12 @@ footer {
   footer {
     padding: 4rem;
   }
+
+  /* car detail */
+  .car-detail {
+    margin-top: 6rem;
+    padding: 2rem 5rem;
+  }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -436,6 +458,12 @@ footer {
   #logout-container .card {
     width: 70%;
     margin: auto;
+  }
+
+  /* car detail */
+  .car-detail {
+    margin-top: 6rem;
+    padding: 3rem 6rem;
   }
 }
 
