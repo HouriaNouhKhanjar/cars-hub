@@ -16,14 +16,6 @@ class OwnerRequiredMixin(UserPassesTestMixin):
         return obj.owner == self.request.user
 
 
-# Create your views here.
-def index(request):
-    """
-    Load the Homepage
-    """
-    return render(request, 'car/index.html')
-
-
 @login_required
 def profile(request):
     """
@@ -56,14 +48,25 @@ def profile(request):
     })
 
 
-class CarListView(LoginRequiredMixin, ListView):
+class CarListView(ListView):
     model = Car
-    template_name = 'profile/cars-list.html'
     context_object_name = 'cars'
-    paginate_by = 10 
+    paginate_by = 9
+
+    def get_template_names(self):
+        if 'profile' in self.request.path and \
+            self.request.user.is_authenticated:
+            return ['profile/cars-list.html']
+        else:
+            return ['car/index.html']
 
     def get_queryset(self):
-        queryset = Car.objects.filter(owner=self.request.user)
+        queryset = Car.objects.all()
+        if 'profile' in self.request.path and \
+            self.request.user.is_authenticated:
+            queryset = queryset.filter(owner=self.request.user)
+        else:
+            queryset = queryset.filter(approved=1)
 
         # Search functionality based on title or model or brand
         search_query = self.request.GET.get('search', '')
@@ -83,13 +86,13 @@ class CarListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-    
+
         # Add a list of categories to filter by
         context['categories'] = Category.objects.all()
-     
+
         # Add search query to preserve the search term
         context['search'] = self.request.GET.get('search', '')
-    
+
         # Add selected category to filter
         context['selected_category'] = self.request.GET.get('category', '')
 
@@ -134,13 +137,13 @@ class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
             CarImage.objects.create(car=self.object, image=img)  
         messages.success(self.request, "Car updated successfully!")
         return super().form_valid(form)
-    
-    
+   
+   
 @login_required
 def delete_car(request, pk):
     if request.method not in ["POST", "DELETE"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
-    
+   
     car = get_object_or_404(Car, pk=pk)
 
     # Check if the logged-in user is the owner of the related car
@@ -178,7 +181,6 @@ def delete_car_image(request, pk):
         messages.error(request, f"Cloudinary image deletion failed: {e}")
         return JsonResponse({'error': f'Cloudinary deletion failed: {e}'},
                             status=500)
-
 
 
 @login_required

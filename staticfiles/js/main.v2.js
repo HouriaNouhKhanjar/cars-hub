@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // auto scroll to car list on home page
+  const url = new URL(window.location.href);
+  const isHome = url.pathname === "/";
+  const hasSearch = url.searchParams.has("search");
+  const hasPage = url.searchParams.has("page");
+  const hasCategory = url.searchParams.has("category");
+
+  if (isHome && (hasSearch || hasPage || hasCategory)) {
+    const target = document.getElementById("cars-list");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  }
   // hide response message toast after 5 s
   setTimeout(() => {
     document.querySelectorAll(".toast").forEach((el) => {

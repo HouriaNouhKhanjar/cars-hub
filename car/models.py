@@ -39,7 +39,7 @@ class Category(models.Model):
         return f"{self.name}"
     
     class Meta:
-        ordering = ["-created_on"]
+        ordering = ["created_on"]
 
         
 class Car(models.Model):

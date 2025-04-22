@@ -12,8 +12,9 @@
 <form method="GET" class="row g-3 align-items-end mb-4">
   <div class="col-md-5">
     <input type="text" name="search" value="{{ search }}" class="form-control"
-      placeholder="Search by title or description">
+      placeholder="Search by title or brand or model">
   </div>
+
 
   <div class="col-md-4">
     <select name="category" class="form-select">
@@ -87,27 +88,27 @@
 
 <!-- Pagination -->
 {% if is_paginated %}
-<nav>
-  <ul class="pagination justify-content-center">
-{% if page_obj.has_previous %}
-<li class="page-item">
-  <a class="page-link action-button-accent"
-   href="?page={{ page_obj.previous_page_number }}&search={{ search }}&category={{ selected_category }}">
-   Previous
-   </a>
-</li>
-{% endif %}
-<li class="page-item p-2"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </li>
-{% if page_obj.has_next %}
-<li class="page-item">
-  <a class="page-link action-button-accent" 
-  href="?page={{ page_obj.next_page_number }}&search={{ search }}&category={{ selected_category }}">
-    Next
-    </a>
-</li>
-{% endif %}
-</ul>
-</nav>
+  <nav>
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link action-button-accent"
+          href="?page={{ page_obj.previous_page_number }}&search={{ search }}&category={{ selected_category }}">
+          Previous
+          </a>
+        </li>
+      {% endif %}
+      <li class="page-item p-2"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </li>
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link action-button-accent" 
+          href="?page={{ page_obj.next_page_number }}&search={{ search }}&category={{ selected_category }}">
+            Next
+            </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
 {% endif %}
 </div>
 {% endblock %}

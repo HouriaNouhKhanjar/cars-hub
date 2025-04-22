@@ -26,138 +26,135 @@
 {% block content %}
 <!-- Main Container -->
 <main class="main-bg">
-<!-- index.html content starts here -->
-<div class="container text-center">
-    <div class="row mx-auto my-auto justify-content-center" id="cars-list">
-        <h2 class="pb-3">Category one</h2>
-        <div id="recipeCarousel" class="carousel slide pb-3" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card m-2" aria-hidden="true">
-                            <img class="card-img-top" src="{% static 'images/placeholder.webp' %}" alt="Card image cap"
-                                class="img-fluid">
-                            <div class="card-body">
-                                <h3 class="card-title placeholder-glow">
-                                    <!-- <span class="placeholder col-6"></span> -->
-                                    test1
-                                </h3>
-                                <p class="card-text placeholder-glow">
-                                    <span class="placeholder col-9"></span>
-                                    <span class="placeholder col-4"></span>
-                                </p>
-                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
+    <!-- index.html content starts here -->
+    <div class="container text-center">
+        <div class="row mx-auto my-auto justify-content-center">
+            <div class="search-container px-3 py-4">
+                <!-- Search & Filter Form -->
+                <form method="GET" class="row g-3 align-items-end">
+                    <div class="col-md-9">
+                        <input type="text" name="search" value="{{ search }}" class="form-control"
+                            placeholder="Search by title or brand or model">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn action-button-accent w-100">Search</button>
+                    </div>
+                </form>
+            </div>
+            {% if categories %}
+            <div id="cartegories-list">
+                <h3 class="text-start py-3">Filter By Category <small>(click to select)</small></h3>
+                <div id="recipeCarousel" class="carousel slide pb-3" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item  {% if not selected_category %} active {% endif %}">
+                            <div
+                                class="col-12 col-md-6 col-lg-4 col-xl-3 {% if not selected_category %} selected {% endif %}">
+                                <a class="page-link text-accent" href="?search={{ search }}">
+                                    <div class="card m-2" aria-hidden="true">
+                                        <img class="card-img-top" src="{% static 'images/placeholder.webp' %}"
+                                            alt="Category image cap" class="img-fluid">
+                                        <div class="card-body">
+                                            <h3 class="card-title">
+                                                All Categories
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card m-2" aria-hidden="true">
-                            <img class="card-img-top" src="{% static 'images/placeholder.webp' %}" alt="Card image cap"
-                                class="img-fluid">
-                            <div class="card-body">
-                                <h3 class="card-title placeholder-glow">
-                                    <!-- <span class="placeholder col-6"></span> -->
-                                    test2
-                                </h3>
-                                <p class="card-text placeholder-glow">
-                                    <span class="placeholder col-9"></span>
-                                    <span class="placeholder col-4"></span>
-                                </p>
-                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
+
+                        {% for category in categories %}
+                        <div
+                            class="carousel-item  {% if  selected_category|add:""|stringformat:"s" == category.pk|stringformat:"s" %}  active {% endif %}">
+                            <div
+                                class="col-12 col-md-6 col-lg-4 col-xl-3  {% if  selected_category|add:""|stringformat:"s" == category.pk|stringformat:"s" %} selected {% endif %}">
+                                <a class="page-link text-accent" href="?search={{ search }}&category={{category.pk}}">
+                                    <div class="card m-2" aria-hidden="true">
+                                        <img class="card-img-top"
+                                            src="{% if 'placeholder' in category.image.url %}{% static 'images/placeholder.webp' %} {%else%} {{category.image.url}} {% endif %}"
+                                            alt="Category image cap" class="img-fluid">
+                                        <div class="card-body">
+                                            <h3 class="card-title">
+                                                {{category.name}}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card m-2" aria-hidden="true">
-                            <img class="card-img-top" src="{% static 'images/placeholder.webp' %}" alt="Card image cap"
-                                class="img-fluid">
-                            <div class="card-body">
-                                <h3 class="card-title placeholder-glow">
-                                    <!-- <span class="placeholder col-6"></span> -->
-                                    test3
-                                </h3>
-                                <p class="card-text placeholder-glow">
-                                    <span class="placeholder col-9"></span>
-                                    <span class="placeholder col-4"></span>
-                                </p>
-                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card m-2" aria-hidden="true">
-                            <img class="card-img-top" src="{% static 'images/placeholder.webp' %}" alt="Card image cap"
-                                class="img-fluid">
-                            <div class="card-body">
-                                <h3 class="card-title placeholder-glow">
-                                    <!-- <span class="placeholder col-6"></span> -->
-                                    test4
-                                </h3>
-                                <p class="card-text placeholder-glow">
-                                    <span class="placeholder col-9"></span>
-                                    <span class="placeholder col-4"></span>
-                                </p>
-                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card m-2" aria-hidden="true">
-                            <img class="card-img-top" src="{% static 'images/placeholder.webp' %}" alt="Card image cap"
-                                class="img-fluid">
-                            <div class="card-body">
-                                <h3 class="card-title placeholder-glow">
-                                    <!-- <span class="placeholder col-6"></span> -->
-                                    test5
-                                </h3>
-                                <p class="card-text placeholder-glow">
-                                    <span class="placeholder col-9"></span>
-                                    <span class="placeholder col-4"></span>
-                                </p>
-                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card m-2" aria-hidden="true">
-                            <img class="card-img-top" src="{% static 'images/placeholder.webp' %}" alt="Card image cap"
-                                class="img-fluid">
-                            <div class="card-body">
-                                <h3 class="card-title placeholder-glow">
-                                    <!-- <span class="placeholder col-6"></span> -->
-                                    test6
-                                </h3>
-                                <p class="card-text placeholder-glow">
-                                    <span class="placeholder col-9"></span>
-                                    <span class="placeholder col-4"></span>
-                                </p>
-                                <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                            </div>
-                        </div>
-                    </div>
+                    <a class="carousel-control-prev bg-transparent w-aut" aria-label="click to slide previous cars"
+                        href="#recipeCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next bg-transparent w-aut" aria-label="click to slide next cars"
+                        href="#recipeCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
                 </div>
             </div>
-            <a class="carousel-control-prev bg-transparent w-aut" aria-label="click to slide previous cars"
-                href="#recipeCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </a>
-            <a class="carousel-control-next bg-transparent w-aut" aria-label="click to slide next cars"
-                href="#recipeCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </a>
+            {% endif %}
+            <div class="car-list" id="cars-list">
+                <h2 class="p-5">Cars</h2>
+                {% if cars %}
+                <div class="d-flex flex-wrap">
+                    {% for car in cars %}
+                    <div class="col-md-6 col-lg-4 p-3">
+                        <div class="card car-item text-start">
+                            <img class="card-img"
+                                src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url}} {% endif %}"
+                                alt="Car image cap" class="img-fluid">
+                            <div class="card-img-overlay">
+                                <h4 class="card-title fs-6">{{car.title}}</h4>
+                                <p class="card-text">
+                                    <small>
+                                        Posted by: {{ car.owner.username }}
+                                    </small>
+                                    <br>
+                                    <small>
+                                        {{ car.created_on|timesince }} ago
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div>
+                    <p>No cars found</p>
+                </div>
+                {% endif %}
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <nav>
+                    <ul class="pagination justify-content-center pt-4">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link text-accent"
+                                href="?page={{ page_obj.previous_page_number }}&search={{ search }}&category={{ selected_category }}">
+                                <i class="fa-solid fa-backward"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item p-2"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link text-accent"
+                                href="?page={{ page_obj.next_page_number }}&search={{ search }}&category={{ selected_category }}">
+                                <i class="fa-solid fa-forward"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 </main>
 
 <!-- index.html content ends here -->

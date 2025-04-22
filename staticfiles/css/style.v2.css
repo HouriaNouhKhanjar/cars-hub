@@ -131,7 +131,7 @@ h3 {
 /* Navbar */
 #navbar {
   box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
-  z-index: 2;
+  z-index: 6;
 }
 
 #navbar .nav-item {
@@ -207,9 +207,63 @@ h3 {
 }
 
 /* Cars List */
-#cars-list .card-img-top {
+.search-container {
+  background: var(--primary-color);
+}
+
+#cartegories-list {
+  background: #efefef;
+}
+
+
+#cartegories-list .carousel-item .selected .card,
+#cartegories-list .carousel-item .card:hover,
+#cartegories-list .carousel-item .card:focus {
+  border: 2px solid var(--primary-color);
+}
+
+#cartegories-list .card-img-top {
   width: 100%;
-  height: 300px;
+  height: 200px;
+}
+
+#cars-list .car-item {
+  border: unset;
+  color: var(--highlight-color-light);
+  box-shadow: 2px 2px 3px rgb(0 0 0 / 30%);
+  cursor: pointer;
+}
+
+#cars-list .card-img-overlay {
+  top: unset !important;
+  background: transparent;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(    358deg,    rgba(19, 18, 18, 0.904),    rgba(27, 27, 27, 0.521)  );
+  transition: top 0.3s ease-in-out;
+  -webkit-transition: top 0.3s ease-in-out;
+  -moz-transition: top 0.3s ease-in-out;
+  -ms-transition: top 0.3s ease-in-out;
+  -o-transition: top 0.3s ease-in-out;
+}
+
+#cars-list .car-item:hover .card-img-overlay,
+#cars-list .car-item:focus .card-img-overlay {
+  top: 30% !important;
+}
+
+#cars-list .card-img {
+  width: 100%;
+  height: 260px;
+  border-radius: unset;
+  -webkit-border-radius: unset;
+  -moz-border-radius: unset;
+  -ms-border-radius: unset;
+  -o-border-radius: unset;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  z-index: 5;
 }
 
 /* Signup */
