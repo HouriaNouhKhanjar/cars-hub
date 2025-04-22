@@ -2,8 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse_lazy
 from django.http import JsonResponse
+from django.utils.http import urlencode
+from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from django.contrib import messages
 from .forms import UserForm, ProfileForm, CarForm
@@ -53,6 +54,13 @@ class CarListView(ListView):
     context_object_name = 'cars'
     paginate_by = 9
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated and 'profile' in self.request.path:
+            login_url = reverse('account_login')
+            params = urlencode({'next': self.request.get_full_path()})
+            return redirect(f'{login_url}?{params}')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_template_names(self):
         if 'profile' in self.request.path and \
             self.request.user.is_authenticated:
@@ -63,7 +71,7 @@ class CarListView(ListView):
     def get_queryset(self):
         queryset = Car.objects.all()
         if 'profile' in self.request.path and \
-            self.request.user.is_authenticated:
+             self.request.user.is_authenticated:
             queryset = queryset.filter(owner=self.request.user)
         else:
             queryset = queryset.filter(approved=1)

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_title %} Cars Hub | Forbiden {% endblock %}
+
+{% block content %}
+<main class="main-bg">
+    <!-- index.html content starts here -->
+    <div class="container text-center pt-5">
+        <h2 class="display-4 text-danger"> 404 - Forbiden </h2>
+        <p>Oops! Not allowed request.</p>
+        <p class="text-primary display-1"><i class="fa-solid fa-screwdriver-wrench"></i></p>
+        <a href="{% url 'home' %}" class="btn action-button-accent mt-3">Return to Home</a>
+    </div>
+</main>
+{% endblock %}

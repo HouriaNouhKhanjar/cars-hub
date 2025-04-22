@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django_summernote',
     'cloudinary',
     'car',
+    'errors',
 ]
 
 SITE_ID = 1
@@ -101,6 +102,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
+
+
 ROOT_URLCONF = 'carshub.urls'
 
 TEMPLATES = [
