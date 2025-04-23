@@ -8,7 +8,7 @@ from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from django.contrib import messages
 from .forms import UserForm, ProfileForm, CarForm
-from .models import UserProfile, Car, Category, CarImage
+from .models import UserProfile, Car, Category, CarImage, Comment
 
 
 class OwnerRequiredMixin(UserPassesTestMixin):
@@ -159,26 +159,6 @@ class CarDetailView(DetailView):
 
 
 @login_required
-def toggle_like(request, pk):
-    if request.method == "POST":
-        car = get_object_or_404(Car, pk=pk)
-
-        if request.user in car.likes.all():
-            car.likes.remove(request.user)
-            liked = False
-        else:
-            car.likes.add(request.user)
-            liked = True
-
-        return JsonResponse({
-            'liked': liked,
-            'total_likes': car.total_likes(),
-        })
-
-    return HttpResponseForbidden()
-
-  
-@login_required
 def delete_car(request, pk):
     if request.method not in ["POST", "DELETE"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
@@ -190,7 +170,6 @@ def delete_car(request, pk):
         return JsonResponse({'error': 'Forbidden'}, status=403)
 
     try:
-        # Optional: delete from Cloudinary or do extra cleanup
         car.delete()
         messages.success(request, "Car deleted from Cloudinary successfully.")
         return JsonResponse({'success': True})
@@ -212,13 +191,93 @@ def delete_car_image(request, pk):
         return JsonResponse({'error': 'Forbidden'}, status=403)
 
     try:
-        # Optional: delete from Cloudinary or do extra cleanup
         car_image.delete()
         messages.success(request, "Image deleted from Cloudinary successfully.")
         return JsonResponse({'success': True})
     except Exception as e:
         messages.error(request, f"Cloudinary image deletion failed: {e}")
         return JsonResponse({'error': f'Cloudinary deletion failed: {e}'},
+                            status=500)
+
+
+@login_required
+def toggle_like(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+
+        if request.user in car.likes.all():
+            car.likes.remove(request.user)
+            liked = False
+        else:
+            car.likes.add(request.user)
+            liked = True
+
+        return JsonResponse({
+            'liked': liked,
+            'total_likes': car.total_likes(),
+        })
+
+    return HttpResponseForbidden()
+
+
+@login_required
+def add_comment(request):
+    if request.method not in ["POST"]:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    try:
+        content = request.POST.get('content')
+        car_id = request.POST.get('car_id')
+        car = get_object_or_404(Car, pk=car_id)
+        comment = Comment.objects.create(user=request.user, car=car,
+                                            content=content)
+        profile = comment.user.user_profile
+        image = 'placeholder' if not profile or \
+            'placeholder' in profile.profile_image.url \
+            else profile.profile_image.url
+        
+        return JsonResponse({
+            'id': comment.id,
+            'user': comment.user.username,
+            'image_url': image,
+            'content': comment.content,
+            'created': comment.created.strftime('%Y-%m-%d %H:%M'),
+        })
+    except Exception as e:
+        messages.error(request, f"Comment update failed: {e}")
+        return JsonResponse({'error': f'Comment update failed: {e}'},
+                            status=500)
+        
+
+@login_required
+def edit_comment(request, pk):
+    if request.method not in ["POST"]:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    comment = get_object_or_404(Comment, pk=pk, user=request.user)
+    if comment.user != request.user:
+        return JsonResponse({'error': 'Forbidden'}, status=403)
+    try:
+        comment.content = request.POST.get('content')
+        comment.save()
+        return JsonResponse({'success': True, 'content': comment.content})
+    except Exception as e:
+        messages.error(request, f"Comment update failed: {e}")
+        return JsonResponse({'error': f'Comment update failed: {e}'},
+                            status=500)
+
+@login_required
+def delete_comment(request, pk):
+    if request.method not in ["POST", "DELETE"]:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    comment = get_object_or_404(Comment, pk=pk, user=request.user)
+    if comment.user != request.user:
+        return JsonResponse({'error': 'Forbidden'}, status=403)
+    try:
+        comment.delete()
+        messages.success(request, "Comment was deleted successfully.")
+        return JsonResponse({'success': True})
+    except Exception as e:
+        messages.error(request, f"Comment deletion failed: {e}")
+        return JsonResponse({'error': f'Comment deletion failed: {e}'},
                             status=500)
 
 

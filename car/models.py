@@ -93,6 +93,14 @@ class CarImage(models.Model):
         return f"{self.get_cloudinary_public_id()}"
 
 
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    car = models.ForeignKey('Car', on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+
 @receiver(post_delete, sender=CarImage)
 def delete_cloudinary_image(sender, instance, **kwargs):
     if instance.image:
