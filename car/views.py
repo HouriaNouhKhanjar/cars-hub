@@ -249,7 +249,7 @@ def add_comment(request):
         messages.error(request, f"Comment update failed: {e}")
         return JsonResponse({'error': f'Comment update failed: {e}'},
                             status=500)
-        
+       
 
 @login_required
 def edit_comment(request, pk):
@@ -261,11 +261,15 @@ def edit_comment(request, pk):
     try:
         comment.content = request.POST.get('content')
         comment.save()
-        return JsonResponse({'success': True, 'content': comment.content})
+        return JsonResponse({'success': True, 
+                             'content': comment.content,
+                             'created': timesince(comment.updated, now()) + " ago"
+                               })
     except Exception as e:
         messages.error(request, f"Comment update failed: {e}")
         return JsonResponse({'error': f'Comment update failed: {e}'},
                             status=500)
+
 
 @login_required
 def delete_comment(request, pk):

@@ -57,11 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then((data) => {
           if (data.success) {
-            // remove image preview
+            // remove car from list
             document
               .getElementById(`row-car-${selectedCarId}`)
               .remove(false);
-            // closeModal function is defined in main.js
+            // closeModal function is defined 
             closeModal();
             // show success message
             showToast("Car deleted successfully!");
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error:", error);
         })
         .finally(() => {
-          // loaderToggel function is defined in main.js
+          // loaderToggel function is defined
           loaderToggel(true);
         });
     });
