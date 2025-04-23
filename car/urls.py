@@ -14,6 +14,7 @@ urlpatterns = [
          name='car_delete'),
     path('car-detail/<int:pk>/', car_views.CarDetailView.as_view(),
          name='car_detail'),
+    path('cars/<int:pk>/like/', car_views.toggle_like, name='toggle_like'),
     path('likes-list/', car_views.likes_list, name='likes_list'),
     path('', car_views.CarListView.as_view(), name='home'),
 ]

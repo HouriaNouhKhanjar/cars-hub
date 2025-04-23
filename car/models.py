@@ -58,13 +58,19 @@ class Car(models.Model):
     approved = models.IntegerField(choices=APPROVED, default=0)
     description = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='liked_cars', blank=True)
     
     def __str__(self):
         return f"{self.title} | created on: {self.created_on.strftime('%Y-%m-%d %H:%M')}"
     
+    
+    def total_likes(self):
+        return self.likes.count()
+    
+ 
     class Meta:
         ordering = ["-created_on"]
-        
+    
 
 class CarImage(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')

@@ -9,6 +9,25 @@
   margin: 8rem 0 5rem;
 }
 
+/* Action btn */
+.user-cars .btn-outline-success,
+.user-cars .btn-outline-danger {
+  padding: 0.2rem;
+  border-width: 0px;
+}
+.user-cars .action-button-accent {
+  padding: 0.2rem;
+  border-width: 0px;
+  color: #29a5b3;
+  background-color: transparent;
+  border-color: #29a5b3;
+}
+.user-cars .action-button-accent:hover,
+.user-cars .action-button-accent:focus {
+  color: white;
+  background-color: #29a5b3;
+}
+
 /* Profile Base */
 #profile-container .table {
   box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
@@ -104,5 +123,21 @@
 @media only screen and (min-width: 768px) {
   .main-bg {
     padding: 1rem;
+  }
+
+  /* Action btn */
+  .user-cars .btn-outline-success,
+  .user-cars .btn-outline-danger,
+  .user-cars .action-button-accent {
+    padding: 0.4rem;
+    border-width: 1px;
+  }
+  .user-cars .btn-outline-success:hover,
+  .user-cars .btn-outline-success:focus,
+  .user-cars .btn-outline-danger:hover,
+  .user-cars .btn-outline-danger:focus,
+  .user-cars .action-button-accent:hover,
+  .user-cars .action-button-accent:focus {
+    color: white;
   }
 }

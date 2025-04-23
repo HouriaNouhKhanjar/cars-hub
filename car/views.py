@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.http import urlencode
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
@@ -157,7 +157,27 @@ class CarDetailView(DetailView):
         context['images'] = self.object.images.all()
         return context
 
-   
+
+@login_required
+def toggle_like(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+
+        if request.user in car.likes.all():
+            car.likes.remove(request.user)
+            liked = False
+        else:
+            car.likes.add(request.user)
+            liked = True
+
+        return JsonResponse({
+            'liked': liked,
+            'total_likes': car.total_likes(),
+        })
+
+    return HttpResponseForbidden()
+
+  
 @login_required
 def delete_car(request, pk):
     if request.method not in ["POST", "DELETE"]:
