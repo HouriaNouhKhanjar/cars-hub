@@ -95,7 +95,7 @@ class CarImage(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    car = models.ForeignKey('Car', on_delete=models.CASCADE, related_name='comments')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

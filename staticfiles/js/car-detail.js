@@ -53,6 +53,14 @@ document.addEventListener("DOMContentLoaded", function () {
           return res.json();
         })
         .then((data) => {
+          const noCommentsElement = document.getElementById('no-comments');
+          if(noCommentsElement) {
+            noCommentsElement.remove();
+          }
+          const commentsCount = document.getElementById('comments-count');
+          if(commentsCount) {
+            commentsCount.innerText = `( ${data.count} comments)`;
+          }
           var imagesrc = document.getElementById('profile-placeholder').getAttribute('src');
           image_url =
             data.image_url == "placeholder"
@@ -88,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p class="comment-content">
             ${data.content} 
              <br>
-             <small class="comment-time">Now</small>
+             <small class="comment-time">${data.created}</small>
              </p>
           </div>`;
           document

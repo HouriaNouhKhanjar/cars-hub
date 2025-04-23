@@ -4,6 +4,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.http import urlencode
+from django.utils.timesince import timesince
+from django.utils.timezone import now
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from django.contrib import messages
@@ -229,7 +231,7 @@ def add_comment(request):
         car_id = request.POST.get('car_id')
         car = get_object_or_404(Car, pk=car_id)
         comment = Comment.objects.create(user=request.user, car=car,
-                                            content=content)
+                                        content=content)
         profile = comment.user.user_profile
         image = 'placeholder' if not profile or \
             'placeholder' in profile.profile_image.url \
@@ -240,7 +242,8 @@ def add_comment(request):
             'user': comment.user.username,
             'image_url': image,
             'content': comment.content,
-            'created': comment.created.strftime('%Y-%m-%d %H:%M'),
+            'created': timesince(comment.created, now()) + " ago",
+            'count': car.comments.count()
         })
     except Exception as e:
         messages.error(request, f"Comment update failed: {e}")

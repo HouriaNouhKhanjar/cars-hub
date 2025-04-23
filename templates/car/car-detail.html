@@ -77,9 +77,11 @@
 
     <div class="py-3 p-lg-5">
         <div class="col-12 col-lg-5">
-            <h3>Comments: <small class="fs-6">
-                    ({{car.comments.count}} comment{% if car.comments.count > 1 %}s{% endif %})
-                </small></h3>
+            <h3>Comments: 
+                <small class="fs-6" id="comments-count">
+                    ({{car.comments.count}} comments)
+                </small>
+            </h3>
             <hr>
         </div>
         {% if user.is_authenticated %}
@@ -89,7 +91,7 @@
             <div class="col-12 col-lg-5">
                 <div id="comments-list">
                     {% if car.comments.count == 0 %}
-                       <span>No Comments</span>
+                       <span id="no-comments">No Comments</span>
                     {% endif %}
                     {% for comment in car.comments.all %}
                     <div class="comment" id="comment-{{ comment.id }}">
