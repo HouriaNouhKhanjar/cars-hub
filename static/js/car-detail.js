@@ -187,6 +187,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const commentId = btn.dataset.id;
     const parent = document.getElementById(`comment-content-${commentId}`);
     const newContent = parent.querySelector(".edit-input").value;
+    if(!newContent || newContent.trim() === ''){
+      alert('cannot save empty string');
+      return;
+    }
     const formData = new FormData();
     formData.append("content", newContent);
     loaderToggel(false);
