@@ -22,6 +22,7 @@ urlpatterns = [
          name='edit_comment'),
     path('comments/<int:pk>/delete/', car_views.delete_comment,
          name='delete_comment'),
-    path('profile/likes-list/', car_views.likes_list, name='likes_list'),
+    path('profile/likes-list/', car_views.UserLikedCarsView.as_view(),
+         name='likes_list'),
     path('', car_views.CarListView.as_view(), name='home'),
 ]

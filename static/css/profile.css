@@ -9,6 +9,11 @@
   margin: 8rem 0 5rem;
 }
 
+#profile-container .navigations .clickable-row {
+  cursor: pointer;
+}
+
+
 /* Action btn */
 .user-cars .btn-outline-success,
 .user-cars .btn-outline-danger {

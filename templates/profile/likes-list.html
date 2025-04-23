@@ -3,5 +3,68 @@
 
 
 {% block profile_content %}
-  linkes list
+<h2>My Likes</h2>
+
+<!-- Car Table -->
+<div class="table-responsive">
+  <table class="table table-striped table-bordered align-middle text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Image</th>
+        <th>Car</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for car in cars %}
+      <tr id="row-car-{{car.pk}}">
+        <td>{{ forloop.counter }}</td>
+        <td>
+          {% if car.images.first %}
+          <img src="{{ car.images.first.image.url }}" alt="{{ car.title }}" class="img-thumbnail" width="80">
+          {% else %}
+          No images
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'car_detail' car.pk %}"
+           target="_blank">
+           {{ car.title }}
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-muted">No likes found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+  <nav>
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link action-button-accent"
+          href="?page={{ page_obj.previous_page_number }}">
+          Previous
+          </a>
+        </li>
+      {% endif %}
+      <li class="page-item p-2"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </li>
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link action-button-accent" 
+          href="?page={{ page_obj.next_page_number }}">
+            Next
+            </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+</div>
 {% endblock %}

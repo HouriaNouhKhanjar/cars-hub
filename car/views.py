@@ -288,9 +288,14 @@ def delete_comment(request, pk):
                             status=500)
 
 
-@login_required
-def likes_list(request):
-    """
-    display users likes
-    """
-    return render(request, 'profile/likes-list.html')
+class UserLikedCarsView(LoginRequiredMixin, ListView):
+    model = Car
+    template_name = 'profile/likes-list.html'
+    context_object_name = 'cars'
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Car.objects.filter(likes=user)
+
+        return queryset
