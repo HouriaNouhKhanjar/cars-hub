@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.contrib import admin
 from django import forms
 from .widgets import DragAndDropWidget
-from .models import Category, Car, CarImage
+from .models import Category, Car, CarImage, Comment
 
 
 @admin.register(Category)
@@ -38,3 +38,10 @@ class CarAdmin(SummernoteModelAdmin):
     search_fields = ['title', 'owner', 'model', 'brand', 'category']
     list_filter = ('approved', 'created_on', 'category',)
     summernote_fields = ('description',)
+    
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    
+    list_display = ('user','car', 'created',)
+    list_filter = ('created',)
