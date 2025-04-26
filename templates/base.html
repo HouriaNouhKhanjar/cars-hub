@@ -3,6 +3,7 @@
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
 {% url 'home' as home_url %}
+{% url 'about' as about_url %}
 {% url 'profile' as profile_url %}
 {% url 'cars_list' as cars_list_url %}
 {% url 'car_edit' as car_edit_url %}
@@ -70,7 +71,7 @@
                             href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" aria-current="page">About Us</a>
+                        <a class="nav-link {% if request.path == about_url %}active{% endif %}" href="{% url 'about' %}"" aria-current="page">About Us</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">

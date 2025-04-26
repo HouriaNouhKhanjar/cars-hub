@@ -205,7 +205,6 @@ h3 {
 
 /* Homepage Header */
 #homepage-header .hero {
-  background-color: var(--dark-color);
   background: linear-gradient(9deg, rgb(8 8 8 / 97%), rgb(89 71 71 / 13%)),
     url("../images/hero.webp") no-repeat center/cover;
 }
@@ -516,6 +515,7 @@ footer {
     margin-top: 6rem;
     padding: 2rem 5rem;
   }
+  
 }
 
 /* Large devices (laptops/desktops, 992px and up) */

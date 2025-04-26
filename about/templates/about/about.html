@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_title %}Cars Hub | About{% endblock %}
+{% block style %}
+<style>
+    #about-header .hero {
+        background: linear-gradient(9deg, rgb(8 8 8 / 97%), rgb(89 71 71 / 13%)),url("{{ about.image.url }}") no-repeat center/cover;
+    }
+</style>
+{% endblock %}
+
+{% block header %}
+<header class="container-fluid">
+    <div class="row" id="about-header">
+        <div class="col-12 hero">
+            <div class="hero-container text-center">
+                <div class="hero-content animation-element">
+                    <h1 class="display-5 fw-bolder animate__animated animate__lightSpeedInLeft">{{ about.title }}</h1>
+                    <a href="#description" aria-label="go to about content"
+                        class="btn btn-lg action-button animate__bounceIn">Discover</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Main Container -->
+<main class="main-bg">
+    <!-- index.html content starts here -->
+    <div class="container"  id="description">
+        <div class="row mx-auto my-auto justify-content-center">
+            <div class="about-content">
+                {{ about.description|safe }}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

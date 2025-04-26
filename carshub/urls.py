@@ -31,5 +31,6 @@ urlpatterns = [
     path('bad-request/', error_views.bad_request_view),
     path('crash/', error_views.crash_view),
     path('not-found/', error_views.not_found),
+    path('', include("about.urls"), name="about-urls"),
     path('', include("car.urls"), name="car-urls"),
 ]
