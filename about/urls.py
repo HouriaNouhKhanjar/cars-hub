@@ -3,5 +3,5 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('profile/', about_views.AboutDetailView.as_view(), name='about'),
+    path('about/', about_views.AboutDetailView.as_view(), name='about'),
 ]

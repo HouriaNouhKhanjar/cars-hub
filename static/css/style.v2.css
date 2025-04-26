@@ -233,7 +233,6 @@ h3 {
   background: #efefef;
 }
 
-
 #cartegories-list .carousel-item .selected .card,
 #cartegories-list .carousel-item .card:hover,
 #cartegories-list .carousel-item .card:focus {
@@ -256,7 +255,11 @@ h3 {
   top: unset !important;
   background: transparent;
   padding: 0.5rem 1rem;
-  background: linear-gradient(    358deg,    rgba(19, 18, 18, 0.904),    rgba(27, 27, 27, 0.521)  );
+  background: linear-gradient(
+    358deg,
+    rgba(19, 18, 18, 0.904),
+    rgba(27, 27, 27, 0.521)
+  );
   transition: top 0.3s ease-in-out;
   -webkit-transition: top 0.3s ease-in-out;
   -moz-transition: top 0.3s ease-in-out;
@@ -376,7 +379,7 @@ h3 {
 
 .comment-actions .edit-btn,
 .comment-actions .delete-btn {
-  cursor: pointer!important;
+  cursor: pointer !important;
 }
 
 .comment-actions .dropdown-item:hover,
@@ -418,6 +421,12 @@ h3 {
 
 #comments-container .scroll-box::-webkit-scrollbar-thumb:hover {
   background: var(--highlight-color);
+}
+
+/* About page */
+.inquiry-form {
+  padding: 1rem;
+  border: 1px solid var(--highlight-color);
 }
 
 /* Footer */
@@ -515,7 +524,6 @@ footer {
     margin-top: 6rem;
     padding: 2rem 5rem;
   }
-  
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -555,6 +563,11 @@ footer {
   .car-detail {
     margin-top: 6rem;
     padding: 3rem 6rem;
+  }
+
+  /* About page */
+  .inquiry-form {
+    padding: 3rem;
   }
 }
 
