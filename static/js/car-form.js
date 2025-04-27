@@ -138,16 +138,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // show success message as a bootstrap toast
   function showToast(message) {
-    const toast = document.createElement("div");
-    toast.className =
-      "toast align-items-center text-bg-success border-0 bottom-fixed center-0 end-0 m-3";
-    toast.role = "alert";
-    toast.innerHTML = `
-        <div class="d-flex">
-          <div class="toast-body">${message}</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>`;
-    document.body.appendChild(toast);
+    const toast = document.querySelector("#message-toast .response-toast");
+    const content = document.querySelector(
+      "#message-toast .response-toast .toast-body"
+    );
+    content.innerText = message;
     new bootstrap.Toast(toast, { delay: 4500 }).show();
     setTimeout(() => toast.remove(), 5000);
   }

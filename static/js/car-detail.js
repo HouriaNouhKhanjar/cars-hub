@@ -135,6 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
           deleteBtn.addEventListener("click", function () {
             selectedCommentId = deleteBtn.dataset.id;
           });
+          const commentBox = document.querySelector(".scroll-box");
+          commentBox.scrollTop = commentBox.scrollHeight;
 
           this.reset();
         })
@@ -165,21 +167,21 @@ document.addEventListener("DOMContentLoaded", function () {
       handelCancelEditing(btn);
     });
   });
-  
+
   function handelCancelEditing(btn) {
     const parent = document.getElementById(`comment-content-${btn.dataset.id}`);
-      parent.querySelector(".comment-text").classList.remove("d-none");
-      parent.querySelector(".edit-input").classList.add("d-none");
-      parent.querySelector(".save-edit").classList.add("d-none");
-      parent.querySelector(".cancel-edit").classList.add("d-none");
-      document
-        .getElementById(`edit-btn-${btn.dataset.id}`)
-        .classList.remove("d-none");
+    parent.querySelector(".comment-text").classList.remove("d-none");
+    parent.querySelector(".edit-input").classList.add("d-none");
+    parent.querySelector(".save-edit").classList.add("d-none");
+    parent.querySelector(".cancel-edit").classList.add("d-none");
+    document
+      .getElementById(`edit-btn-${btn.dataset.id}`)
+      .classList.remove("d-none");
   }
 
   document.querySelectorAll(".save-edit").forEach((btn) => {
     btn.addEventListener("click", function () {
-       handelSaveEditing(btn);
+      handelSaveEditing(btn);
     });
   });
 
@@ -187,8 +189,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const commentId = btn.dataset.id;
     const parent = document.getElementById(`comment-content-${commentId}`);
     const newContent = parent.querySelector(".edit-input").value;
-    if(!newContent || newContent.trim() === ''){
-      alert('cannot save empty string');
+    if (!newContent || newContent.trim() === "") {
+      alert("cannot save empty string");
       return;
     }
     const formData = new FormData();
@@ -227,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // selectedCommentId determines the id of comment to be deleted
-  
+
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       selectedCommentId = this.dataset.id;
@@ -290,16 +292,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // show success message as a bootstrap toast
   function showToast(message) {
-    const toast = document.createElement("div");
-    toast.className =
-      "toast align-items-center text-bg-success border-0 bottom-fixed center-0 end-0 m-3";
-    toast.role = "alert";
-    toast.innerHTML = `
-        <div class="d-flex">
-          <div class="toast-body">${message}</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>`;
-    document.body.appendChild(toast);
+    const toast = document.querySelector("#message-toast .response-toast");
+    const content = document.querySelector(
+      "#message-toast .response-toast .toast-body"
+    );
+    content.innerText = message;
     new bootstrap.Toast(toast, { delay: 4500 }).show();
     setTimeout(() => toast.remove(), 5000);
   }

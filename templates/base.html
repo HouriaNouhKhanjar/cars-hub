@@ -71,7 +71,8 @@
                             href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == about_url %}active{% endif %}" href="{% url 'about' %}"" aria-current="page">About Us</a>
+                        <a class="nav-link {% if request.path == about_url %}active{% endif %}"
+                            href="{% url 'about' %}"" aria-current=" page">About Us</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
@@ -131,16 +132,10 @@
         <div class="row flex-wrap">
             <!-- displaying Django messages -->
             <div aria-live="polite" aria-atomic="true" class="position-relative">
-                <!-- Position it: -->
-                <!-- - `.toast-container` for spacing between toasts -->
-                <!-- - `top-0` & `end-0` to position the toasts in the upper right corner -->
-                <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
                 <div class="toast-container top-0 end-0 p-3">
-
-                    <!-- Then put toasts within -->
                     {% for message in messages %}
-                    <div class="toast response-toast show text-bg-{{ message.tags }}" role="alert" aria-live="assertive"
-                        aria-atomic="true">
+                    <div class="toast response-toast show text-bg-{{ message.tags }} page-toast" role="alert"
+                        aria-live="assertive" aria-atomic="true">
                         <div>
                             <div class="toast-header">
                                 <strong class="me-auto">Response</strong>
@@ -151,15 +146,29 @@
                                 {{ message | safe }}
                             </div>
                         </div>
-
                     </div>
                     {% endfor %}
-
                 </div>
             </div>
             {% block content %}
             <!-- Content Goes here -->
             {% endblock content %}
+              <!-- Show message response from ajax request -->
+              <div aria-live="polite" aria-atomic="true" class="position-relative" id="message-toast">
+                <div class="toast-container top-0 end-0 p-3">
+                    <div class="toast response-toast text-bg-success" role="alert" aria-live="assertive"
+                        aria-atomic="true">
+                        <div>
+                            <div class="toast-header">
+                                <strong class="me-auto">Response</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

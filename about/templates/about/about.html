@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-
 {% block head_title %}Cars Hub | About{% endblock %}
 {% block style %}
 <style>
     #about-header .hero {
-        background: linear-gradient(9deg, rgb(8 8 8 / 97%), rgb(89 71 71 / 13%)),url("{{ about.image.url }}") no-repeat center/cover;
+        background: linear-gradient(9deg, rgb(8 8 8 / 97%), rgb(89 71 71 / 13%)),
+        url("{{ about.image.url }}") no-repeat center/cover;
     }
 </style>
 {% endblock %}
@@ -31,7 +31,7 @@
 <!-- Main Container -->
 <main class="main-bg">
     <!-- index.html content starts here -->
-    <div class="container"  id="description">
+    <div class="container" id="description">
         <div class="row mx-auto my-auto justify-content-center">
             <div class="about-content">
                 {{ about.description|safe }}
@@ -40,13 +40,13 @@
                 <h3>Send your Inquiry</h3>
                 {% if form.title.errors %}
                 <div class="text-danger">
-                    {{ form.title.errors.as_text }}
+                    {{ inquiry_form.title.errors.as_text }}
                 </div>
                 {% endif %}
                 <form method="post" class="row g-3">
                     {% csrf_token %}
                     <!-- Car Fields -->
-                    {{ form | crispy }}
+                    {{ inquiry_form | crispy }}
                     <button type="submit" class="action-button-secondary">Send</button>
                 </form>
             </div>
