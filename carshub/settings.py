@@ -72,19 +72,19 @@ JAZZMIN_SETTINGS = {
     "site_header": "Cars Hub Dashboard",
     "site_brand": "Cars Hub",
     "site_icon": "images/favicon.ico",
-    
+
     # Copyright on the footer
     "copyright": "<a href='/' target='_blank'>Cars Hub &copy; 2025</a>",
-    
+
     # Additional links to include in the user menu on the top right
     "usermenu_links": [
         {"name": "View Site", "url": "/", "icon": 'fas fa-chart-bar'},
     ],
-    
+
     # Hide these models when generating side menu
     "hide_models": ['auth.group', 'socialaccount.socialaccount',
-                    'socialaccount.socialapp','socialaccount.socialtoken',
-                    'sites.site','django_summernote.attachment'],
+                    'socialaccount.socialapp', 'socialaccount.socialtoken',
+                    'sites.site', 'django_summernote.attachment'],
 }
 
 # Custom Colors
