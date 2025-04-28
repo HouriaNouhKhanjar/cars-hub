@@ -5,9 +5,9 @@
 {% block profile_content %}
 <div id="profile-image">
   {% if user.user_profile and "placeholder" in user.user_profile.profile_image.url %}
-  <img src="{% static 'images/nobody.jpg' %}" width="75%" alt="placeholder image">
+  <img src="{% static 'images/nobody.jpg' %}" width="75" alt="placeholder image">
   {% else %}
-  <img src="{{ user.user_profile.profile_image.url }}" width="75%" alt="profile image">
+  <img src="{{ user.user_profile.profile_image.url }}" width="75" alt="profile image">
   {% endif %}
 </div>
 <h2>Edit Profile</h2>

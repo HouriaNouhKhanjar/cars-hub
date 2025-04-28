@@ -52,7 +52,7 @@
                                 <a class="page-link text-accent" href="?search={{ search }}">
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top" src="{% static 'images/placeholder.webp' %}"
-                                            alt="Category image cap" class="img-fluid">
+                                            alt="Category image cap">
                                         <div class="card-body">
                                             <h3 class="card-title">
                                                 All Categories
@@ -72,7 +72,7 @@
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top"
                                             src="{% if 'placeholder' in category.image.url %}{% static 'images/placeholder.webp' %} {%else%} {{category.image.url}} {% endif %}"
-                                            alt="Category image cap" class="img-fluid">
+                                            alt="Category image cap">
                                         <div class="card-body">
                                             <h3 class="card-title">
                                                 {{category.name}}
@@ -105,7 +105,7 @@
                             <div class="card car-item text-start">
                                 <img class="card-img"
                                     src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url}} {% endif %}"
-                                    alt="Car image cap" class="img-fluid">
+                                    alt="Car image cap">
                                 <div class="card-img-overlay">
                                     <h4 class="card-title fs-6">{{car.title}}</h4>
                                     <p class="card-text">

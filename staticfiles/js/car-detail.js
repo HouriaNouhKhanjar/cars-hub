@@ -66,18 +66,16 @@ document.addEventListener("DOMContentLoaded", function () {
           if (commentsCount) {
             commentsCount.innerText = `( ${data.count} comments)`;
           }
-          var imagesrc = document
-            .getElementById("profile-placeholder")
-            .getAttribute("src");
+          var imagesrc = document.getElementById("profile-placeholder").dataset.src;
           const image_url =
             data.image_url == "placeholder" ? imagesrc : data.image_url;
           // create element to add the new comment to comments box  
           const newComment = `
           <div class="comment" id="comment-${data.id}">
-          <div>
-            <img src="${image_url}" class="rounded-circle" width="40">
+          <div class="d-inline">
+            <img src="${image_url}" class="rounded-circle" width="40" alt="user profile image">
             <strong>${data.user}</strong>
-             <span class="btn-group dropend comment-actions">
+             <div class="btn-group dropend comment-actions">
                 <button type="button" class="btn text-primary dropdown-toggle" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         <i class="fa-solid fa-gear"></i>
@@ -102,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </button>
                   </li>
                 </ul>
-              </span>
+              </div>
             </div>
             <div class="comment-content" id="comment-content-${data.id}">
               <p class="comment-text">

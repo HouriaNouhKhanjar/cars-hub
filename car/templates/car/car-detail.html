@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block head_title %}Cars Hub | Car Detail{% endblock %}
 {% block style %}
 {% endblock %}
 
@@ -32,7 +32,7 @@
                 <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>
                 </button>
-                <buttons class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
                 </button>
             </div>
@@ -68,7 +68,7 @@
 
                 {% endif %}
             </p>
-            <p>{{ car.description|safe }}</p>
+            <div>{{ car.description|safe }}</div>
             <p>Posted by: {{ car.owner.username }}</p>
             <small>
                 {{ car.created_on|timesince }} ago
@@ -86,7 +86,7 @@
             <hr>
         </div>
         {% if user.is_authenticated %}
-        <div id="profile-placeholder" class="d-none" src={% static 'images/nobody.jpg' %}></div>
+        <div id="profile-placeholder" class="d-none" data-src={% static 'images/nobody.jpg' %}></div>
         <div class="d-flex flex-wrap" id="comments-container">
             <div class="col-12 col-lg-5 scroll-box">
                 <div id="comments-list">
@@ -95,17 +95,17 @@
                     {% endif %}
                     {% for comment in car.comments.all %}
                     <div class="comment" id="comment-{{ comment.id }}">
-                        <div>
+                        <div class="d-inline">
                             {% if comment.user.user_profile and "placeholder" in comment.user.user_profile.profile_image.url %}
                                  <img src="{% static 'images/nobody.jpg' %}" class="rounded-circle" width="40"
                                        alt="placeholder image">
                             {% else %}
                                  <img src="{{ comment.user.user_profile.profile_image.url }}" class="rounded-circle"
-                                      width="40">
+                                      width="40"  alt="user profile image">
                             {% endif %}
                             <strong>{{ comment.user.username }}</strong>
                             {% if comment.user == user %}
-                                <span class="btn-group dropend comment-actions">
+                                <div class="btn-group dropend comment-actions">
                                     <button type="button" class="btn text-primary dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false">
                                         <i class="fa-solid fa-gear"></i>
@@ -127,7 +127,7 @@
                                             </button>
                                         </li>
                                     </ul>
-                                </span>
+                                </div>
                             {% endif %}
                         </div>
 
