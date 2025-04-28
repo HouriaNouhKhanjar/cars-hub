@@ -1,7 +1,6 @@
 /**
- * upload images in car create edit form
- *  */
-
+ * upload images in car create/edit form
+ * */
 document.addEventListener("DOMContentLoaded", function () {
   // selectedImageId determines the id of image to be deleted
   var selectedImageId;
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "X-Requested-With": "XMLHttpRequest"
         }
       })
-        .then((res) =>  {
+        .then((res) => {
           if (!res.ok) {
             closeModal();
             alert(res.statusText);
@@ -40,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document
               .getElementById(`image-preview-${selectedImageId}`)
               .remove(false);
-            // closeModal function is defined in main.js
             closeModal();
             // show success message
             showToast("Image deleted successfully!");
@@ -52,15 +50,16 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error:", error);
         })
         .finally(() => {
-          // loaderToggel function is defined in main.js
           loaderToggel(true);
         });
     });
 
-  //remove duplicate image input
+  /**
+   * remove duplicate image input
+   * */
   var element = document.getElementById("div_id_images");
   if (element) {
-    element.remove(); // removes the element from the DOM
+    element.remove();
   }
 
   //drag and drop images in car forms
@@ -124,6 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
     reader.readAsDataURL(file);
   }
 
+  /**
+   * remove image from file buffer
+   */
   function removeFile(fileToRemove) {
     let newBuffer = new DataTransfer();
     for (let i = 0; i < fileBuffer.items.length; i++) {
@@ -147,18 +149,19 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => toast.remove(), 5000);
   }
 
-     //close modal
-     function closeModal() {
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("confirm-modal")
-      );
-      modal.hide();
-    }
-    // loader show/hide
-    function loaderToggel(hide) {
-      const loader = document.getElementById("loader");
-      const modal = document.getElementById("confirm-modal");
-      loader.style.visibility = hide ? "hidden" : "visible";
-      modal.style.zIndex = hide ? "1100" : "10";
-    }
+  //close the confirmation modal
+  function closeModal() {
+    const modal = bootstrap.Modal.getInstance(
+      document.getElementById("confirm-modal")
+    );
+    modal.hide();
+  }
+  
+  // loader show/hide
+  function loaderToggel(hide) {
+    const loader = document.getElementById("loader");
+    const modal = document.getElementById("confirm-modal");
+    loader.style.visibility = hide ? "hidden" : "visible";
+    modal.style.zIndex = hide ? "1100" : "10";
+  }
 });

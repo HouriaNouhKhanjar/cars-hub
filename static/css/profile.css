@@ -13,13 +13,13 @@
   cursor: pointer;
 }
 
-
-/* Action btn */
+/* Action buttons */
 .user-cars .btn-outline-success,
 .user-cars .btn-outline-danger {
   padding: 0.2rem;
   border-width: 0px;
 }
+
 .user-cars .action-button-accent {
   padding: 0.2rem;
   border-width: 0px;
@@ -27,6 +27,7 @@
   background-color: transparent;
   border-color: #29a5b3;
 }
+
 .user-cars .action-button-accent:hover,
 .user-cars .action-button-accent:focus {
   color: white;
@@ -62,10 +63,6 @@
   width: 9rem;
   border: 2px solid rgba(235, 235, 235, 0.877);
   border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
 }
 
 #profile-container input[type="file"] {
@@ -78,10 +75,6 @@
   border: none;
   border-bottom: 1px solid;
   border-radius: unset;
-  -webkit-border-radius: unset;
-  -moz-border-radius: unset;
-  -ms-border-radius: unset;
-  -o-border-radius: unset;
 }
 
 #profile-form input:hover,
@@ -130,7 +123,7 @@
     padding: 1rem;
   }
 
-  /* Action btn */
+  /* Action button */
   .user-cars .btn-outline-success,
   .user-cars .btn-outline-danger,
   .user-cars .action-button-accent {

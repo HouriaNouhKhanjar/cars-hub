@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
    * from profile form
    */
   function removeExtraImageInput(elem) {
-    for (child of elem.children) {
+    for (let child of elem.children) {
       if (child.classList.contains("input-group")) {
         elem.removeChild(child);
       }
@@ -43,7 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/car-delete/${selectedCarId}/`, {
         method: "DELETE",
         headers: {
-          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value,
           "X-Requested-With": "XMLHttpRequest"
         }
       })
@@ -58,10 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.success) {
             // remove car from list
-            document
-              .getElementById(`row-car-${selectedCarId}`)
-              .remove(false);
-            // closeModal function is defined 
+            document.getElementById(`row-car-${selectedCarId}`).remove(false);
             closeModal();
             // show success message
             showToast("Car deleted successfully!");
@@ -73,12 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error:", error);
         })
         .finally(() => {
-          // loaderToggel function is defined
           loaderToggel(true);
         });
     });
 
-      // show success message as a bootstrap toast
+  // show success message as a bootstrap toast
   function showToast(message) {
     const toast = document.querySelector("#message-toast .response-toast");
     const content = document.querySelector(
@@ -89,18 +86,18 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => toast.remove(), 5000);
   }
 
-     //close modal
-     function closeModal() {
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("confirm-modal")
-      );
-      modal.hide();
-    }
-    // loader show/hide
-    function loaderToggel(hide) {
-      const loader = document.getElementById("loader");
-      const modal = document.getElementById("confirm-modal");
-      loader.style.visibility = hide ? "hidden" : "visible";
-      modal.style.zIndex = hide ? "1100" : "10";
-    }
+  //close modal
+  function closeModal() {
+    const modal = bootstrap.Modal.getInstance(
+      document.getElementById("confirm-modal")
+    );
+    modal.hide();
+  }
+  // loader show/hide
+  function loaderToggel(hide) {
+    const loader = document.getElementById("loader");
+    const modal = document.getElementById("confirm-modal");
+    loader.style.visibility = hide ? "hidden" : "visible";
+    modal.style.zIndex = hide ? "1100" : "10";
+  }
 });

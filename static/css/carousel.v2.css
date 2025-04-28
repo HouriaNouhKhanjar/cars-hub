@@ -34,6 +34,7 @@
     -o-transform: translateX(-50%);
   }
 }
+
 /* large and up screens */
 @media (min-width: 992px) {
   .carousel-inner .carousel-item-end.active,
@@ -84,6 +85,7 @@
   -ms-transform: translateX(0);
   -o-transform: translateX(0);
 }
+
 .carousel-control-next,
 .carousel-control-prev {
   top: 50% !important;
@@ -92,6 +94,7 @@
   opacity: 0.8 !important;
   color: var(--primary-color) !important;
 }
+
 .bg-transparent {
   background-color: var(--primary-color) !important;
 }

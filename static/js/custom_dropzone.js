@@ -1,3 +1,6 @@
+/**
+ * customize drag&drop upload image in Admin
+ */
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('input[type="file"]').forEach(function(input) {
         const wrapper = input.closest('.custom-dropzone-wrapper');

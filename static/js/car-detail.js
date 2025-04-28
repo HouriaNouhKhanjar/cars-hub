@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
     (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
   );
 
-  //
+  /**
+   * like and dislike using ajax
+   */
   document.querySelectorAll(".like-btn").forEach(function (btn) {
     btn.addEventListener("click", function () {
       const carId = this.dataset.carId;
@@ -33,7 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // add comment
+  /**
+   * add a new comment using ajax
+   */
   var selectedCommentId;
   var commentForm = document.getElementById("comment-form");
   if (commentForm) {
@@ -65,8 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
           var imagesrc = document
             .getElementById("profile-placeholder")
             .getAttribute("src");
-          image_url =
+          const image_url =
             data.image_url == "placeholder" ? imagesrc : data.image_url;
+          // create element to add the new comment to comments box  
           const newComment = `
           <div class="comment" id="comment-${data.id}">
           <div>
@@ -116,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        id="cancel-btn-${data.id}">Cancel</button>
             </div>
           </div>`;
+          // add event listeners to action buttons for new comment
           document
             .getElementById("comments-list")
             .insertAdjacentHTML("beforeend", newComment);
@@ -135,9 +141,11 @@ document.addEventListener("DOMContentLoaded", function () {
           deleteBtn.addEventListener("click", function () {
             selectedCommentId = deleteBtn.dataset.id;
           });
+          // scroll down the comments box
           const commentBox = document.querySelector(".scroll-box");
           commentBox.scrollTop = commentBox.scrollHeight;
 
+          // reset the comment textarea
           this.reset();
         })
         .catch((error) => {
@@ -146,13 +154,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // edit comment
+  /**
+   *  add event listener to comment edit button
+   *  */
   document.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       handleEdit(btn);
     });
   });
 
+  /**
+   *  handel the comment edit action
+   *  */
   function handleEdit(btn) {
     const parent = document.getElementById(`comment-content-${btn.dataset.id}`);
     parent.querySelector(".comment-text").classList.add("d-none");
@@ -162,12 +175,18 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.classList.add("d-none");
   }
 
+  /**
+   *  add event listener to cancel button to cancel comment editing
+   * */
   document.querySelectorAll(".cancel-edit").forEach((btn) => {
     btn.addEventListener("click", function () {
       handelCancelEditing(btn);
     });
   });
 
+   /**
+   *  handel the comment cancel editing action
+   * */
   function handelCancelEditing(btn) {
     const parent = document.getElementById(`comment-content-${btn.dataset.id}`);
     parent.querySelector(".comment-text").classList.remove("d-none");
@@ -179,12 +198,18 @@ document.addEventListener("DOMContentLoaded", function () {
       .classList.remove("d-none");
   }
 
+  /**
+   *  add event listener to update comment
+   * */
   document.querySelectorAll(".save-edit").forEach((btn) => {
     btn.addEventListener("click", function () {
       handelSaveEditing(btn);
     });
   });
 
+  /**
+   *  handel the update comment
+   * */
   function handelSaveEditing(btn) {
     const commentId = btn.dataset.id;
     const parent = document.getElementById(`comment-content-${commentId}`);
@@ -222,16 +247,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .finally(() => {
-        // loaderToggel function is defined in main.js
         loaderToggel(true);
         showToast("Comment was updated successfully.");
       });
   }
 
-  // selectedCommentId determines the id of comment to be deleted
-
+  /**
+   * add event listener to delete button
+   */
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
+      // selectedCommentId determines the id of comment to be deleted
       selectedCommentId = this.dataset.id;
     });
   });
@@ -273,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
               const commentsList = document.getElementById("comments-list");
               commentsList.innerHTML = `<span id="no-comments">No Comments</span>`;
             }
-            // closeModal function is defined in main.js
+            // closeModal
             closeModal();
             // show success message
             showToast("Comment deleted successfully!");
@@ -285,12 +311,13 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error:", error);
         })
         .finally(() => {
-          // loaderToggel function is defined in main.js
           loaderToggel(true);
         });
     });
 
-  // show success message as a bootstrap toast
+  /**
+   *  show success message as a bootstrap toast
+   *  */
   function showToast(message) {
     const toast = document.querySelector("#message-toast .response-toast");
     const content = document.querySelector(
@@ -301,14 +328,19 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => toast.remove(), 5000);
   }
 
-  //close modal
+  /** 
+   * close modal
+   * */
   function closeModal() {
     const modal = bootstrap.Modal.getInstance(
       document.getElementById("confirm-modal")
     );
     modal.hide();
   }
-  // loader show/hide
+  
+  /** 
+   * loader show/hide 
+   * */
   function loaderToggel(hide) {
     const loader = document.getElementById("loader");
     const modal = document.getElementById("confirm-modal");

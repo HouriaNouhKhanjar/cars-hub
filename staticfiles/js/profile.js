@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
    * from profile form
    */
   function removeExtraImageInput(elem) {
-    for (child of elem.children) {
+    for (let child of elem.children) {
       if (child.classList.contains("input-group")) {
         elem.removeChild(child);
       }
@@ -43,7 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/car-delete/${selectedCarId}/`, {
         method: "DELETE",
         headers: {
-          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value,
           "X-Requested-With": "XMLHttpRequest"
         }
       })
@@ -58,10 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.success) {
             // remove car from list
-            document
-              .getElementById(`row-car-${selectedCarId}`)
-              .remove(false);
-            // closeModal function is defined 
+            document.getElementById(`row-car-${selectedCarId}`).remove(false);
             closeModal();
             // show success message
             showToast("Car deleted successfully!");
@@ -73,39 +71,33 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error:", error);
         })
         .finally(() => {
-          // loaderToggel function is defined
           loaderToggel(true);
         });
     });
 
-      // show success message as a bootstrap toast
+  // show success message as a bootstrap toast
   function showToast(message) {
-    const toast = document.createElement("div");
-    toast.className =
-      "toast align-items-center text-bg-success border-0 bottom-fixed center-0 end-0 m-3";
-    toast.role = "alert";
-    toast.innerHTML = `
-        <div class="d-flex">
-          <div class="toast-body">${message}</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>`;
-    document.body.appendChild(toast);
+    const toast = document.querySelector("#message-toast .response-toast");
+    const content = document.querySelector(
+      "#message-toast .response-toast .toast-body"
+    );
+    content.innerText = message;
     new bootstrap.Toast(toast, { delay: 4500 }).show();
     setTimeout(() => toast.remove(), 5000);
   }
 
-     //close modal
-     function closeModal() {
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("confirm-modal")
-      );
-      modal.hide();
-    }
-    // loader show/hide
-    function loaderToggel(hide) {
-      const loader = document.getElementById("loader");
-      const modal = document.getElementById("confirm-modal");
-      loader.style.visibility = hide ? "hidden" : "visible";
-      modal.style.zIndex = hide ? "1100" : "10";
-    }
+  //close modal
+  function closeModal() {
+    const modal = bootstrap.Modal.getInstance(
+      document.getElementById("confirm-modal")
+    );
+    modal.hide();
+  }
+  // loader show/hide
+  function loaderToggel(hide) {
+    const loader = document.getElementById("loader");
+    const modal = document.getElementById("confirm-modal");
+    loader.style.visibility = hide ? "hidden" : "visible";
+    modal.style.zIndex = hide ? "1100" : "10";
+  }
 });
