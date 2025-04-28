@@ -6,18 +6,27 @@ from .models import UserProfile, Car
 
 
 class UserForm(forms.ModelForm):
+    """
+    Form class for user information
+    """
     class Meta:
         model = User
         fields = ['email', 'username']
 
 
 class ProfileForm(forms.ModelForm):
+    """
+    Form class for user profile
+    """
     class Meta:
         model = UserProfile
         fields = ['profile_image', 'phone']
 
 
 class CarForm(forms.ModelForm):
+    """
+    Form class for car
+    """
     description = forms.CharField(widget=SummernoteWidget())
     images = forms.FileField(widget=forms.ClearableFileInput(
         attrs={'allow_multiple_selected': True}), required=False)

@@ -14,9 +14,7 @@
         <form method="post" enctype="multipart/form-data" class="row g-3">
             {% csrf_token %}
             <!-- Car Fields -->
-
             {{ form | crispy }}
-
             <!-- Drag & Drop Upload -->
             <div>
                 <label for="id_image" class="form-label">Upload Car Images</label>
@@ -25,25 +23,25 @@
                     <input type="file" id="id_image" name="images" accept="image/*" multiple hidden>
                     <button type="button" class="btn action-button-secondary"
                         onclick="document.getElementById('id_image').click();">Select Images</button>
-                       
+
                     <div id="preview" class="row mt-3 gx-2 gy-2">
-                         <!-- display car images -->
+                        <!-- display car images -->
                         {% if edit_mode and car_images %}
                         {% for image in car_images %}
                         <div class="col-12 col-md-4 position-relative" id="image-preview-{{ image.id }}">
                             <div class="border rounded shadow-sm overflow-hidden position-relative"
-                            data-image-id="{{ image.id }}">
-                             <img src="{{ image.image.url }}" class="img-fluid rounded w-100" alt="preview">
-                             <button type="button" 
-                             class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 delete-image-btn"
-                             data-bs-toggle="modal" data-bs-target="#confirm-modal"
-                              data-image-id="{{ image.id }}">
-                                 &times;
-                            </button>
-                           </div>
+                                data-image-id="{{ image.id }}">
+                                <img src="{{ image.image.url }}" class="img-fluid rounded w-100" alt="preview">
+                                <button type="button"
+                                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 delete-image-btn"
+                                    data-bs-toggle="modal" data-bs-target="#confirm-modal"
+                                    data-image-id="{{ image.id }}">
+                                    &times;
+                                </button>
+                            </div>
                         </div>
-                      {% endfor %}
-                      {% endif %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>

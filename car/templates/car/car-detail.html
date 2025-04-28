@@ -9,6 +9,7 @@
 <!-- index.html content starts here -->
 <div class="container car-detail">
     <div class="d-flex flex-wrap">
+        <!-- display car images -->
         <div class="col-12 col-lg-5 pt-0 pb-5 p-lg-5">
             {% if images %}
             <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -33,13 +34,13 @@
                 </button>
                 <buttons class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
-                    </button>
+                </button>
             </div>
             {% else %}
             <p>No images available for this car.</p>
             {% endif %}
         </div>
-
+        <!-- display car content -->
         <div class="col-12 col-lg-7 pt-2 pb-0 p-lg-5">
             <h2>{{ car.title }}</h2>
             <p class="text-end mb-3">
@@ -74,7 +75,7 @@
             </small>
         </div>
     </div>
-
+    <!-- display comment box -->
     <div class="py-3 p-lg-5">
         <div class="col-12 col-lg-5">
             <h3>Comments:
@@ -85,49 +86,48 @@
             <hr>
         </div>
         {% if user.is_authenticated %}
-        <div id="profile-placeholder" src={% static 'images/nobody.jpg' %} style="display: none;"></div>
+        <div id="profile-placeholder" class="d-none" src={% static 'images/nobody.jpg' %}></div>
         <div class="d-flex flex-wrap" id="comments-container">
             <div class="col-12 col-lg-5 scroll-box">
                 <div id="comments-list">
                     {% if car.comments.count == 0 %}
-                    <span id="no-comments">No Comments</span>
+                         <span id="no-comments">No Comments</span>
                     {% endif %}
                     {% for comment in car.comments.all %}
                     <div class="comment" id="comment-{{ comment.id }}">
                         <div>
                             {% if comment.user.user_profile and "placeholder" in comment.user.user_profile.profile_image.url %}
-                            <img src="{% static 'images/nobody.jpg' %}" class="rounded-circle" width="40"
-                                alt="placeholder image">
+                                 <img src="{% static 'images/nobody.jpg' %}" class="rounded-circle" width="40"
+                                       alt="placeholder image">
                             {% else %}
-                            <img src="{{ comment.user.user_profile.profile_image.url }}" class="rounded-circle"
-                                width="40">
+                                 <img src="{{ comment.user.user_profile.profile_image.url }}" class="rounded-circle"
+                                      width="40">
                             {% endif %}
                             <strong>{{ comment.user.username }}</strong>
                             {% if comment.user == user %}
-                            <span class="btn-group dropend comment-actions">
-                                <button type="button" class="btn text-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <i class="fa-solid fa-gear"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <button class="dropdown-item edit-btn"
-                                         id="edit-btn-{{ comment.pk }}" data-id="{{ comment.pk }}">
-                                            Edit
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <button class="dropdown-item delete-btn"
-                                        data-bs-toggle="modal" data-bs-target="#confirm-modal"
-                                         data-id="{{ comment.pk }}">
-                                            Delete
-                                        </button>
-                                    </li>
-                                </ul>
-                            </span>
+                                <span class="btn-group dropend comment-actions">
+                                    <button type="button" class="btn text-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fa-solid fa-gear"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="dropdown-item edit-btn" id="edit-btn-{{ comment.pk }}"
+                                                data-id="{{ comment.pk }}">
+                                                Edit
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item delete-btn" data-bs-toggle="modal"
+                                                data-bs-target="#confirm-modal" data-id="{{ comment.pk }}">
+                                                Delete
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </span>
                             {% endif %}
                         </div>
 
@@ -141,11 +141,10 @@
                             </p>
                             <textarea class="form-control my-3 edit-input d-none">{{ comment.content }}</textarea>
                             <button class="btn btn-sm action-button-secondary save-edit d-none"
-                             data-id="{{ comment.pk }}">Save</button>
+                                data-id="{{ comment.pk }}">Save</button>
                             <button class="btn btn-sm action-button-accent cancel-edit d-none"
-                             data-id="{{ comment.pk }}">Cancel</button>
+                                data-id="{{ comment.pk }}">Cancel</button>
                         </div>
-
                     </div>
                     {% endfor %}
                 </div>
@@ -160,31 +159,30 @@
             </form>
         </div>
         {% else %}
-        <div>
-            <span class="col-12"> Sign in to allow commenting <a class="link" href="{{ login_url }}">login</a></span>.
-            <p class="card-text placeholder-glow">
-                <span class="placeholder col-12 col-md-8 col-lg-3"></span>
-                <span class="placeholder col-0 col-lg-2"></span>
-            </p>
-            <p class="card-text placeholder-glow">
-                <span class="placeholder col-12 col-md-8 col-lg-3"></span>
-                <span class="placeholder col-0 col-lg-2"></span>
-            </p>
-            <p class="card-text placeholder-glow">
-                <span class="placeholder col-12 col-md-8 col-lg-3"></span>
-                <span class="placeholder col-0 col-lg-2"></span>
-            </p>
-            <p class="my-2">
-                <textarea class="placeholder col-12 col-md-8 col-lg-5"></textarea>
-            </p>
-            <p>
-                <a class="btn btn-primary disabled placeholder col-12 col-md-3 col-lg-1" aria-disabled="true"></a>
-            </p>
-        </div>
+            <div>
+                <span class="col-12"> Sign in to allow commenting <a class="link" href="{{ login_url }}">login</a></span>.
+                <p class="card-text placeholder-glow">
+                    <span class="placeholder col-12 col-md-8 col-lg-3"></span>
+                    <span class="placeholder col-0 col-lg-2"></span>
+                </p>
+                <p class="card-text placeholder-glow">
+                    <span class="placeholder col-12 col-md-8 col-lg-3"></span>
+                    <span class="placeholder col-0 col-lg-2"></span>
+                </p>
+                <p class="card-text placeholder-glow">
+                    <span class="placeholder col-12 col-md-8 col-lg-3"></span>
+                    <span class="placeholder col-0 col-lg-2"></span>
+                </p>
+                <p class="my-2">
+                    <textarea class="placeholder col-12 col-md-8 col-lg-5"></textarea>
+                </p>
+                <p>
+                    <a class="btn btn-primary disabled placeholder col-12 col-md-3 col-lg-1" aria-disabled="true"></a>
+                </p>
+            </div>
         {% endif %}
     </div>
 </div>
-
 {% endblock %}
 
 {% block script %}

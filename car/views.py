@@ -1,12 +1,12 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, JsonResponse
-from django.utils.http import urlencode
 from django.utils.timesince import timesince
-from django.utils.timezone import now
 from django.urls import reverse_lazy, reverse
+from django.utils.http import urlencode
+from django.utils.timezone import now
 from django.db.models import Q
 from django.contrib import messages
 from .forms import UserForm, ProfileForm, CarForm
@@ -22,7 +22,18 @@ class OwnerRequiredMixin(UserPassesTestMixin):
 @login_required
 def profile(request):
     """
-    Manage profile page
+    Display the profile of the authenticated user to edit.
+
+    **Context**
+
+    ``user_form``
+        An instance of :form:`car.UserForm`
+    ``profile_form``
+        An instance of :form:`car.ProfileForm`
+
+    **Template:**
+
+    :template:`profile/index.html`
     """
     user = request.user
     profile, created = UserProfile.objects.get_or_create(user=user)
@@ -52,20 +63,44 @@ def profile(request):
 
 
 class CarListView(ListView):
+    """
+    Returns all published cars in :model:`car.Car`
+    if the request is from homepage, when authenticated
+    user requests the cars list from his profile then
+    return only his cars and displays them in a page of
+    nine cars.
+    **Context**
+
+    ``queryset``
+        All published instances of :model:`car.Car`
+        or
+        All instances of :model:`car.Car` filtered by request.user
+
+    ``paginate_by``
+        Number of cars per page.
+
+    **Template:**
+
+    ``Homepage_template``
+        :template:`car/index.html`
+    ``Profile_template``
+        :template:`profile/cars-list.html`
+    """
     model = Car
     context_object_name = 'cars'
     paginate_by = 9
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated and 'profile' in self.request.path:
+        if not request.user.is_authenticated and \
+           'profile' in self.request.path:
             login_url = reverse('account_login')
             params = urlencode({'next': self.request.get_full_path()})
             return redirect(f'{login_url}?{params}')
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_template_names(self):
         if 'profile' in self.request.path and \
-            self.request.user.is_authenticated:
+          self.request.user.is_authenticated:
             return ['profile/cars-list.html']
         else:
             return ['car/index.html']
@@ -73,7 +108,7 @@ class CarListView(ListView):
     def get_queryset(self):
         queryset = Car.objects.all()
         if 'profile' in self.request.path and \
-             self.request.user.is_authenticated:
+           self.request.user.is_authenticated:
             queryset = queryset.filter(owner=self.request.user)
         else:
             queryset = queryset.filter(approved=1)
@@ -82,7 +117,7 @@ class CarListView(ListView):
         search_query = self.request.GET.get('search', '')
         if search_query:
             queryset = queryset.filter(
-                Q(title__icontains=search_query) | 
+                Q(title__icontains=search_query) |
                 Q(model__icontains=search_query) |
                 Q(brand__icontains=search_query)
             )
@@ -110,6 +145,18 @@ class CarListView(ListView):
 
 
 class CarCreateView(LoginRequiredMixin, CreateView):
+    """
+    Display car form page for create.
+
+    **Context**
+
+    ``form``
+        An instance of :form:`car.CarForm`
+
+    **Template:**
+
+    :template:`profile/car-form.html`
+    """
     model = Car
     form_class = CarForm
     template_name = 'profile/car-form.html'
@@ -129,6 +176,24 @@ class CarCreateView(LoginRequiredMixin, CreateView):
 
 
 class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
+    """
+    Display car form page for update.
+
+    **Context**
+
+    ``car``
+        An instance of :model:`car.Car`
+    ``edit_mode``
+        True
+    ``car_images``
+        A list of image instance :model:`car.CarImage`
+    ``form``
+        An instance of :form:`car.CarForm`
+
+    **Template:**
+
+    :template:`profile/car-form.html`
+    """
     model = Car
     form_class = CarForm
     template_name = 'profile/car-form.html'
@@ -144,12 +209,24 @@ class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
     def form_valid(self, form):
         images = self.request.FILES.getlist('images')
         for img in images:
-            CarImage.objects.create(car=self.object, image=img)  
+            CarImage.objects.create(car=self.object, image=img)
         messages.success(self.request, "Car updated successfully!")
         return super().form_valid(form)
 
 
 class CarDetailView(DetailView):
+    """
+    Display an individual :model:`car.Car`.
+
+    **Context**
+
+    ``car``
+        An instance of :model:`car.Car`.
+
+    **Template:**
+
+    :template:`car/car-detail.html`
+    """
     model = Car
     template_name = 'car/car-detail.html'
     context_object_name = 'car'
@@ -162,9 +239,17 @@ class CarDetailView(DetailView):
 
 @login_required
 def delete_car(request, pk):
+    """
+    Delete an individual car.
+
+    **args**
+
+    ``pk``
+        The instance id of :model:`car.Car` to delete.
+    """
     if request.method not in ["POST", "DELETE"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
-   
+
     car = get_object_or_404(Car, pk=pk)
 
     # Check if the logged-in user is the owner of the related car
@@ -183,9 +268,17 @@ def delete_car(request, pk):
 
 @login_required
 def delete_car_image(request, pk):
+    """
+    Delete an individual image.
+
+    **args**
+
+    ``pk``
+        The instance id of :model:`car.CarImage` to delete.
+    """
     if request.method not in ["POST", "DELETE"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
-    
+
     car_image = get_object_or_404(CarImage, pk=pk)
 
     # Check if the logged-in user is the owner of the related car
@@ -194,7 +287,8 @@ def delete_car_image(request, pk):
 
     try:
         car_image.delete()
-        messages.success(request, "Image deleted from Cloudinary successfully.")
+        messages.success(request,
+                         "Image deleted from Cloudinary successfully.")
         return JsonResponse({'success': True})
     except Exception as e:
         messages.error(request, f"Cloudinary image deletion failed: {e}")
@@ -204,6 +298,14 @@ def delete_car_image(request, pk):
 
 @login_required
 def toggle_like(request, pk):
+    """
+    Like or dislike a car.
+
+    **args**
+
+    ``pk``
+        The id of instance of :model:`car.Car` to be like/dislike.
+    """
     if request.method == "POST":
         car = get_object_or_404(Car, pk=pk)
 
@@ -222,8 +324,48 @@ def toggle_like(request, pk):
     return HttpResponseForbidden()
 
 
+class UserLikedCarsView(LoginRequiredMixin, ListView):
+    """
+    Returns all cars in :model:`car.Car`
+    that are liked by request.user
+    and displays them in a page of ten likes.
+    **Context**
+
+    ``queryset``
+        All car instances of :model:`car.Car` filtered by request.user
+    ``paginate_by``
+        Number of cars per page.
+
+    **Template:**
+
+    :template:`profile/likes-list.html`
+    """
+    model = Car
+    template_name = 'profile/likes-list.html'
+    context_object_name = 'cars'
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Car.objects.filter(likes=user)
+
+        return queryset
+
+
 @login_required
 def add_comment(request):
+    """
+    Save a comment on car.
+
+    **request**
+
+    ``content``
+        User comment as a text.
+    ``car_id``
+        Car id that the user want to comment on.
+    ``user``
+        The authenticated user
+    """
     if request.method not in ["POST"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     try:
@@ -231,12 +373,12 @@ def add_comment(request):
         car_id = request.POST.get('car_id')
         car = get_object_or_404(Car, pk=car_id)
         comment = Comment.objects.create(user=request.user, car=car,
-                                        content=content)
+                                         content=content)
         profile = comment.user.user_profile
         image = 'placeholder' if not profile or \
             'placeholder' in profile.profile_image.url \
             else profile.profile_image.url
-        
+
         return JsonResponse({
             'id': comment.id,
             'user': comment.user.username,
@@ -249,10 +391,18 @@ def add_comment(request):
         messages.error(request, f"Comment update failed: {e}")
         return JsonResponse({'error': f'Comment update failed: {e}'},
                             status=500)
-       
+
 
 @login_required
 def edit_comment(request, pk):
+    """
+    Update an individual comment.
+
+    **args**
+
+    ``pk``
+        The instance id of :model:`car.Comment` to edit.
+    """
     if request.method not in ["POST"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     comment = get_object_or_404(Comment, pk=pk, user=request.user)
@@ -261,10 +411,11 @@ def edit_comment(request, pk):
     try:
         comment.content = request.POST.get('content')
         comment.save()
-        return JsonResponse({'success': True, 
+        return JsonResponse({'success': True,
                              'content': comment.content,
-                             'created': timesince(comment.updated, now()) + " ago"
-                               })
+                             'created': f"{timesince(comment.updated, now())}\
+                                          ago"
+                             })
     except Exception as e:
         messages.error(request, f"Comment update failed: {e}")
         return JsonResponse({'error': f'Comment update failed: {e}'},
@@ -273,6 +424,14 @@ def edit_comment(request, pk):
 
 @login_required
 def delete_comment(request, pk):
+    """
+    Delete an individual comment.
+
+    **args**
+
+    ``pk``
+        The instance id of :model:`car.Comment` to delete.
+    """
     if request.method not in ["POST", "DELETE"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     comment = get_object_or_404(Comment, pk=pk, user=request.user)
@@ -286,16 +445,3 @@ def delete_comment(request, pk):
         messages.error(request, f"Comment deletion failed: {e}")
         return JsonResponse({'error': f'Comment deletion failed: {e}'},
                             status=500)
-
-
-class UserLikedCarsView(LoginRequiredMixin, ListView):
-    model = Car
-    template_name = 'profile/likes-list.html'
-    context_object_name = 'cars'
-    paginate_by = 10
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = Car.objects.filter(likes=user)
-
-        return queryset

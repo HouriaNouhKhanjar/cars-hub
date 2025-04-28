@@ -1,7 +1,7 @@
 from cloudinary.models import CloudinaryField
 import cloudinary.uploader
-from urllib.parse import urlparse
 from django.db.models.signals import post_delete
+from urllib.parse import urlparse
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db import models
@@ -13,8 +13,7 @@ APPROVED = ((0, "Not Approved"), (1, "Approved"))
 
 class UserProfile(models.Model):
     """
-    User Profile model : Each user has a profile
-    he can update it any time after login
+    Stores a single profile entry related to :model:`auth.User`.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True,
@@ -29,23 +28,23 @@ class UserProfile(models.Model):
 
 class Category(models.Model):
     """
-    Car Category model
+    Stores a single category entry.
     """
     name = models.CharField(max_length=200)
     created_on = models.DateTimeField(auto_now_add=True)
     image = CloudinaryField('image', default='placeholder')
-    
+
     def __str__(self):
         return f"{self.name}"
-    
+
     class Meta:
         ordering = ["created_on"]
 
-        
+
 class Car(models.Model):
     """
-    Car model title, model, brand, age, category, owner, approved, created_on,
-    description
+    Stores a single car entry related to model:`auth.User`
+    and :model:`car.Category`.
     """
     title = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
@@ -59,31 +58,34 @@ class Car(models.Model):
     description = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_cars', blank=True)
-    
+
     def __str__(self):
-        return f"{self.title} | created on: {self.created_on.strftime('%Y-%m-%d %H:%M')}"
-    
-    
+        return f"{self.title} | \
+                  created on: {self.created_on.strftime('%Y-%m-%d %H:%M')}"
+
     def total_likes(self):
         return self.likes.count()
-    
- 
+
     class Meta:
         ordering = ["-created_on"]
-    
+
 
 class CarImage(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')
+    """
+    Stores a single car image entry related to :model:`car.Car`.
+    """
+    car = models.ForeignKey(Car, on_delete=models.CASCADE,
+                            related_name='images')
     image = CloudinaryField('image', default='placeholder')
-    
+
     def get_cloudinary_public_id(self):
         """
         Extract Cloudinary public ID from the image URL.
         """
         try:
             url = self.image.url
-            path = urlparse(url).path  # e.g., /v1/car_images/filename.jpg
-            public_id = os.path.splitext(path)[0].strip('/')  # removes extension
+            path = urlparse(url).path
+            public_id = os.path.splitext(path)[0].strip('/')
             return public_id
         except Exception as e:
             print("Failed to extract public ID:", e)
@@ -94,8 +96,13 @@ class CarImage(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Stores a single comment entry related to :model:`car.Car`
+    and :model:`auth.User`.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='comments')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE,
+                            related_name='comments')
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -103,6 +110,10 @@ class Comment(models.Model):
 
 @receiver(post_delete, sender=CarImage)
 def delete_cloudinary_image(sender, instance, **kwargs):
+    """
+    Delete image from cloudinary once teh related car
+    was deleted or the car image was deleted.
+    """
     if instance.image:
         public_id = instance.get_cloudinary_public_id()
         if public_id:

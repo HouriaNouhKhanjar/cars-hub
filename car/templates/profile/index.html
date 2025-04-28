@@ -11,6 +11,7 @@
   {% endif %}
 </div>
 <h2>Edit Profile</h2>
+<!-- display user form and profile form -->
 <form method="POST" enctype="multipart/form-data" id="profile-form">
   {% csrf_token %}
   {{ user_form | crispy }}

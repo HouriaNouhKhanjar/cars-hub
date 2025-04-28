@@ -4,7 +4,8 @@ from django.urls import path
 
 urlpatterns = [
     path('profile/', car_views.profile, name='profile'),
-    path('profile/cars-list/', car_views.CarListView.as_view(), name='car_list'),
+    path('profile/cars-list/', car_views.CarListView.as_view(),
+         name='car_list'),
     path('car-add/', car_views.CarCreateView.as_view(), name='car_add'),
     path('car-edit/<int:pk>/', car_views.CarUpdateView.as_view(),
          name='car_edit'),
@@ -16,9 +17,9 @@ urlpatterns = [
          name='car_detail'),
     path('cars/<int:pk>/like/', car_views.toggle_like,
          name='toggle_like'),
-    path('comments/add/', car_views.add_comment, 
+    path('comments/add/', car_views.add_comment,
          name='add_comment'),
-    path('comments/<int:pk>/edit/', car_views.edit_comment, 
+    path('comments/<int:pk>/edit/', car_views.edit_comment,
          name='edit_comment'),
     path('comments/<int:pk>/delete/', car_views.delete_comment,
          name='delete_comment'),

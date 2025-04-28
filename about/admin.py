@@ -15,7 +15,7 @@ class AboutAdmin(SummernoteModelAdmin):
 @admin.register(Inquiry)
 class InquiryAdmin(admin.ModelAdmin):
     """
-    List user inquiries and editable read fild in admin
+    Displays list of user inquiries and editable read field in admin
     """
     list_display = ('name', 'email', 'read', 'created_on',)
     list_editable = ('read',)
