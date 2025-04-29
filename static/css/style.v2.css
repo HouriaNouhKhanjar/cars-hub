@@ -257,7 +257,9 @@ h3 {
 
 #cars-list .card-img {
   width: 100%;
-  height: 260px;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 4 / 3; 
   border-radius: unset;
 }
 

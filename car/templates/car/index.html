@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load cloudinary_extras %}
 {% block head_title %}Cars Hub{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.v2.css' %}">
@@ -65,13 +66,14 @@
 
                         {% for category in categories %}
                         <div
-                            class="carousel-item  {% if  selected_category|add:""|stringformat:"s" == category.pk|stringformat:"s" %}  active {% endif %}">
+                            class="carousel-item  {% if  selected_category|add:''|stringformat:'s' == category.pk|stringformat:'s' %}  active {% endif %}">
                             <div
-                                class="col-12 col-md-6 col-lg-4 col-xl-3  {% if  selected_category|add:""|stringformat:"s" == category.pk|stringformat:"s" %} selected {% endif %}">
-                                <a class="page-link text-accent" href="?search={{ search }}&category={{category.pk}}">
+                                class="col-12 col-md-6 col-lg-4 col-xl-3  {% if  selected_category|add:''|stringformat:'s' == category.pk|stringformat:'s' %} selected {% endif %}">
+                                <a class="page-link text-accent" aria-label="click to filter cars list by {{category.name}}" 
+                                    href="?search={{ search }}&category={{category.pk}}">
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top"
-                                            src="{% if 'placeholder' in category.image.url %}{% static 'images/placeholder.webp' %} {%else%} {{category.image.url}} {% endif %}"
+                                            src="{% if 'placeholder' in category.image.url %}{% static 'images/placeholder.webp' %} {%else%} {{category.image.url|cloudinary_optimize_category}} {% endif %}"
                                             alt="Category image cap">
                                         <div class="card-body">
                                             <h3 class="card-title">
@@ -101,13 +103,13 @@
                 <div class="d-flex flex-wrap">
                     {% for car in cars %}
                     <div class="col-md-6 col-lg-4 p-3">
-                        <a href="{% url 'car_detail' car.pk %}">
+                        <a href="{% url 'car_detail' car.pk %}" aria-label="Click to go to {{car.title}} detail page">
                             <div class="card car-item text-start">
                                 <img class="card-img"
-                                    src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url}} {% endif %}"
+                                    src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url|cloudinary_optimize_car}} {% endif %}"
                                     alt="Car image cap">
                                 <div class="card-img-overlay">
-                                    <h4 class="card-title fs-6">{{car.title}}</h4>
+                                    <h3 class="card-title fs-6">{{car.title}}</h3>
                                     <p class="card-text">
                                         <small>
                                             Posted by: {{ car.owner.username }}
