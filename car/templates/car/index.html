@@ -109,7 +109,7 @@
                                     src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url|cloudinary_optimize_car}} {% endif %}"
                                     alt="Car image cap">
                                 <div class="card-img-overlay">
-                                    <h3 class="card-title fs-6">{{car.title}}</h3>
+                                    <h3 class="card-title fs-5">{{car.title}}</h3>
                                     <p class="card-text">
                                         <small>
                                             Posted by: {{ car.owner.username }}

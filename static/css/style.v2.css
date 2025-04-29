@@ -263,6 +263,10 @@ h3 {
   border-radius: unset;
 }
 
+#cars-list .card h3 {
+  color: var(--highlight-color-light);
+}
+
 .carousel-control-prev,
 .carousel-control-next {
   z-index: 5;
