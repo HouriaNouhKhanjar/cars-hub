@@ -264,7 +264,7 @@ h3 {
 }
 
 #cars-list .card h3 {
-  color: var(--highlight-color-light);
+  color: var(--highlight-color-light)!important;
 }
 
 .carousel-control-prev,
