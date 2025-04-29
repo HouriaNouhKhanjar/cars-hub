@@ -193,7 +193,7 @@ h3 {
 /* Homepage Header */
 #homepage-header .hero {
   background: linear-gradient(9deg, rgb(8 8 8 / 97%), rgb(89 71 71 / 13%)),
-    url("../images/hero.webp") no-repeat center/cover;
+    url("../images/hero.680dbb781aba.webp") no-repeat center/cover;
 }
 
 /* Main section */
@@ -485,7 +485,7 @@ footer {
   /* homepage */
   #homepage-header .hero {
     background: linear-gradient(87deg, rgb(8 8 8 / 97%), rgb(125 114 114 / 13%)),
-      url("../images/hero.webp") no-repeat center/cover;
+      url("../images/hero.680dbb781aba.webp") no-repeat center/cover;
   }
   /* Main section */
   .main-bg {

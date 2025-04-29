@@ -66,6 +66,9 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+SESSION_COOKIE_SAMESITE = 'Lax'  # Or 'Strict'
+SESSION_COOKIE_SECURE = True
+
 # Add custom theme to Admin panel
 JAZZMIN_SETTINGS = {
     "site_title": "Cars Hub Admin",
@@ -168,6 +171,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
 STATIC_URL = 'static/'
