@@ -50,7 +50,7 @@
                         <div class="carousel-item  {% if not selected_category %} active {% endif %}">
                             <div
                                 class="col-12 col-md-6 col-lg-4 col-xl-3 {% if not selected_category %} selected {% endif %}">
-                                <a class="page-link text-accent" href="?search={{ search }}">
+                                <a class="page-link text-accent" href="?search={{ search }}" aria-label="click to reset category filter">
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top" src="{% static 'images/placeholder.webp' %}"
                                             alt="Category image cap">
@@ -138,6 +138,7 @@
                         {% if page_obj.has_previous %}
                         <li class="page-item">
                             <a class="page-link text-accent"
+                               aria-label="go to previous cars list page"
                                 href="?page={{ page_obj.previous_page_number }}&search={{ search }}&category={{ selected_category }}">
                                 <i class="fa-solid fa-backward"></i>
                             </a>
@@ -149,6 +150,7 @@
                         {% if page_obj.has_next %}
                         <li class="page-item">
                             <a class="page-link text-accent"
+                               aria-label="go to next cars list page"
                                 href="?page={{ page_obj.next_page_number }}&search={{ search }}&category={{ selected_category }}">
                                 <i class="fa-solid fa-forward"></i>
                             </a>

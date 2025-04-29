@@ -64,7 +64,7 @@ h3 {
 
 .action-button-accent {
   background-color: var(--secondary-color);
-  color: var(--highlight-color-light);
+  color: black;
   border: 2px solid var(--secondary-color);
   border-radius: 0;
   font-weight: 600;
@@ -81,7 +81,7 @@ h3 {
 .action-button-secondary:hover,
 .action-button-accent:hover {
   color: var(--primary-color);
-  background-color: transparent;
+  background-color: var(--highlight-color-light);;
   animation: jello;
   animation-duration: 2s;
   -webkit-animation: jello;
@@ -173,7 +173,7 @@ h3 {
 
 /* Header */
 .hero {
-  height: 90vh;
+  height: 50vh;
 }
 
 .hero-container {
@@ -471,6 +471,9 @@ footer {
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   /* header */
+  .hero {
+    height: 60vh;
+  }
   .hero-container {
     justify-content: left;
   }
@@ -505,6 +508,9 @@ footer {
     padding: 0 3rem;
   }
   /* header */
+  .hero {
+    height: 90vh;
+  }
   .hero-container {
     padding: 7rem 4rem;
   }
