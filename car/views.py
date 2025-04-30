@@ -4,8 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timesince import timesince
-from django.urls import reverse_lazy, reverse
-from django.utils.http import urlencode
+from django.urls import reverse_lazy
 from django.utils.timezone import now
 from django.db.models import Q
 from django.contrib import messages
@@ -65,16 +64,11 @@ def profile(request):
 class CarListView(ListView):
     """
     Returns all published cars in :model:`car.Car`
-    if the request is from homepage, when authenticated
-    user requests the cars list from his profile then
-    return only his cars and displays them in a page of
-    nine cars.
+    and displays them in a page of nine cars.
     **Context**
 
     ``queryset``
         All published instances of :model:`car.Car`
-        or
-        All instances of :model:`car.Car` filtered by request.user
 
     ``paginate_by``
         Number of cars per page.
@@ -83,35 +77,71 @@ class CarListView(ListView):
 
     ``Homepage_template``
         :template:`car/index.html`
+    """
+    model = Car
+    context_object_name = 'cars'
+    template_name = 'car/index.html'
+    paginate_by = 9
+
+    def get_queryset(self):
+        queryset = Car.objects.all().filter(approved=1)
+
+        # Search functionality based on title or model or brand
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(model__icontains=search_query) |
+                Q(brand__icontains=search_query)
+            )
+
+        # Filter by category
+        category_filter = self.request.GET.get('category', '')
+        if category_filter:
+            queryset = queryset.filter(category__id=category_filter)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Add a list of categories to filter by
+        context['categories'] = Category.objects.all()
+
+        # Add search query to preserve the search term
+        context['search'] = self.request.GET.get('search', '')
+
+        # Add selected category to filter
+        context['selected_category'] = self.request.GET.get('category', '')
+
+        return context
+
+
+class UserCarListView(LoginRequiredMixin, ListView):
+    """
+    Returns all user cars in :model:`car.Car`
+    and displays them in a cars list page of nine cars.
+    **Context**
+
+    ``queryset``
+        All instances of :model:`car.Car` filtered by request.user
+
+    ``paginate_by``
+        Number of cars per page.
+
+    **Template:**
+
     ``Profile_template``
         :template:`profile/cars-list.html`
     """
     model = Car
     context_object_name = 'cars'
+    template_name = 'profile/cars-list.html'
     paginate_by = 9
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated and \
-           'profile' in self.request.path:
-            login_url = reverse('account_login')
-            params = urlencode({'next': self.request.get_full_path()})
-            return redirect(f'{login_url}?{params}')
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_template_names(self):
-        if 'profile' in self.request.path and \
-          self.request.user.is_authenticated:
-            return ['profile/cars-list.html']
-        else:
-            return ['car/index.html']
 
     def get_queryset(self):
         queryset = Car.objects.all()
-        if 'profile' in self.request.path and \
-           self.request.user.is_authenticated:
-            queryset = queryset.filter(owner=self.request.user)
-        else:
-            queryset = queryset.filter(approved=1)
+        queryset = queryset.filter(owner=self.request.user)
 
         # Search functionality based on title or model or brand
         search_query = self.request.GET.get('search', '')
