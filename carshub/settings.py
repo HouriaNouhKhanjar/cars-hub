@@ -53,13 +53,10 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django_summernote',
     'cloudinary',
-    'compressor',
     'car',
     'errors',
     'about',
 ]
-
-STATICFILES_FINDERS = ['compressor.finders.CompressorFinder']
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'

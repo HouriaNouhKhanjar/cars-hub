@@ -45,12 +45,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    {% load compress %}
-    {% compress css %}
     <link rel="stylesheet" href="{% static 'css/style.v2.css' %}">
     {% block style %}
     {% endblock style %}
-    {% endcompress %}
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -246,11 +243,9 @@
     <!-- link Font Awesome Kit -->
     <script src="https://kit.fontawesome.com/1e3f59fece.js" crossorigin="anonymous"></script>
     <!-- Custom JS Code -->
-    {% compress js %}
     <script src="{% static 'js/main.v2.js' %}"></script>
     {% block script %}
     {% endblock script %}
-    {% endcompress %}
 </body>
 
 </html>
