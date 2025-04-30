@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'about',
 ]
 
+STATICFILES_FINDERS = ['compressor.finders.CompressorFinder']
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
