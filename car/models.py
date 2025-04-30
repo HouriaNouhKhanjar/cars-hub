@@ -36,12 +36,12 @@ class Category(models.Model):
     image = CloudinaryField('image', default='placeholder')
 
     @property
-    def optimize_image(self):
+    def image_url(self):
+        url = self.image.url
         # Returns the first image URL if available
-        if self.image and self.image.url and \
-           'placeholder' not in self.image.url:
-            return self.image.url.replace("http://", "https://")
-        return None
+        if 'placeholder' not in url:
+            return url.replace("http://", "https://")
+        return 'static/images/placeholder.webp'
 
     def __str__(self):
         return f"{self.name}"
@@ -72,12 +72,12 @@ class Car(models.Model):
         return self.likes.count()
 
     @property
-    def first_image(self):
+    def image_url(self):
         # Returns the first image URL if available
-        if self.images.exists() and \
-           'placeholder' not in self.images.first().image.url:
-            return self.images.first().optimize_url()
-        return None
+        first_image = self.images.first()
+        if first_image and 'placeholder' not in first_image.image.url:
+            return first_image.optimize_url()
+        return 'static/images/placeholder.webp'
 
     def __str__(self):
         return f"{self.title} | \
