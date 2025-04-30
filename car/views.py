@@ -84,7 +84,10 @@ class CarListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Car.objects.all().filter(approved=1)
+        queryset = Car.objects.select_related('category').all()
+        queryset = queryset.select_related('category')
+        queryset = queryset.prefetch_related('images')
+        queryset = queryset.filter(approved=1)
 
         # Search functionality based on title or model or brand
         search_query = self.request.GET.get('search', '')
@@ -113,6 +116,22 @@ class CarListView(ListView):
 
         # Add selected category to filter
         context['selected_category'] = self.request.GET.get('category', '')
+
+        # Iterate over all cars in the context
+        for car in context['cars']:
+            if car.first_image:
+                # Set the modified image URL back to the car object
+                car.image_url = car.first_image
+            else:
+                car.image_url = 'static/images/placeholder.webp'
+
+        # Iterate over all categories in the context
+        for category in context['categories']:
+            if category.optimize_image:
+                # Set the modified image URL back to the car object
+                category.image_url = category.optimize_image
+            else:
+                category.image_url = 'static/images/placeholder.webp'
 
         return context
 

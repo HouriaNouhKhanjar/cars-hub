@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load cloudinary_extras %}
 {% block head_title %}Cars Hub{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.v2.css' %}">
@@ -73,9 +72,10 @@
                                     href="?search={{ search }}&category={{category.pk}}">
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top"
-                                            src="{% if 'placeholder' in category.image.url %}{% static 'images/placeholder.webp' %} {%else%} {{category.image.url|cloudinary_optimize_category}} {% endif %}"
+                                            src="{{category.image_url}}"
                                             referrerpolicy="strict-origin"
-                                            alt="Category image cap">
+                                            alt="Category image cap"
+                                            loading="lazy">
                                         <div class="card-body">
                                             <h3 class="card-title">
                                                 {{category.name}}
@@ -107,8 +107,9 @@
                         <a href="{% url 'car_detail' car.pk %}" aria-label="Click to go to {{car.title}} detail page">
                             <div class="card car-item text-start">
                                 <img class="card-img"
-                                    src="{% if not car.images or not car.images.first %}{% static 'images/placeholder.webp' %} {%else%} {{car.images.first.image.url|cloudinary_optimize_car}} {% endif %}"
+                                    src="{{car.image_url}}"
                                     referrerpolicy="strict-origin"
+                                    loading="lazy"
                                     alt="Car image cap">
                                 <div class="card-img-overlay">
                                     <h3 class="card-title fs-5">{{car.title}}</h3>

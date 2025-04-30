@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db import models
 import os
+import re
 
 
 APPROVED = ((0, "Not Approved"), (1, "Approved"))
@@ -34,6 +35,14 @@ class Category(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     image = CloudinaryField('image', default='placeholder')
 
+    @property
+    def optimize_image(self):
+        # Returns the first image URL if available
+        if self.image and self.image.url and \
+           'placeholder' not in self.image.url:
+            return self.image.url.replace("http://", "https://")
+        return None
+
     def __str__(self):
         return f"{self.name}"
 
@@ -59,15 +68,29 @@ class Car(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_cars', blank=True)
 
+    def total_likes(self):
+        return self.likes.count()
+
+    @property
+    def first_image(self):
+        # Returns the first image URL if available
+        if self.images.exists() and \
+           'placeholder' not in self.images.first().image.url:
+            return self.images.first().optimize_url()
+        return None
+
     def __str__(self):
         return f"{self.title} | \
                   created on: {self.created_on.strftime('%Y-%m-%d %H:%M')}"
 
-    def total_likes(self):
-        return self.likes.count()
-
     class Meta:
         ordering = ["-created_on"]
+        indexes = [
+            models.Index(fields=["brand"]),
+            models.Index(fields=["model"]),
+            models.Index(fields=["title"]),
+            models.Index(fields=["category"]),
+        ]
 
 
 class CarImage(models.Model):
@@ -90,6 +113,15 @@ class CarImage(models.Model):
         except Exception as e:
             print("Failed to extract public ID:", e)
             return None
+
+    def optimize_url(self):
+        """
+        Replace http with https and
+        inserts f_auto,q_auto and aspect ratio
+        right after 'upload/' in the Cloudinary URL.
+        """
+        return re.sub(r'/upload/', '/upload/c_fill,w_400,h_300/f_auto,q_auto/',
+                      self.image.url.replace("http://", "https://"))
 
     def __str__(self):
         return f"{self.get_cloudinary_public_id()}"
