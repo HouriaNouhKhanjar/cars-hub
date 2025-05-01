@@ -117,8 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
               </p>
               <form class="comment-form d-none">
                <div class="d-flex flex-column flex-wrap">
-                  <label for="comment-${data.id}" class="form-label">Your Comment</label>
-                  <textarea id="comment-${data.id}" class="form-control my-3 edit-input" required>${data.content}</textarea>
+                  <label for="input-comment-${data.id}" class="form-label">Your Comment</label>
+                  <textarea id="input-comment-${data.id}" class="form-control my-3 edit-input" required>${data.content}</textarea>
                 </div>
                 <button class="btn btn-sm action-button-secondary save-edit"
                         aria-label="click to update the comment"
