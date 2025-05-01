@@ -173,7 +173,7 @@ h3 {
 
 /* Header */
 .hero {
-  height: 50vh;
+  height: 500px;
 }
 
 .hero-container {
@@ -376,7 +376,7 @@ h3 {
 #comments-container .scroll-box {
   padding: 0.5rem 2rem 0.5rem 1rem;
   border: 1px solid var(--highlight-color);
-  max-height: 50vh;
+  max-height: 500px;
   overflow: auto;
   scroll-behavior: smooth;
 }
@@ -474,7 +474,7 @@ footer {
 @media only screen and (min-width: 768px) {
   /* header */
   .hero {
-    height: 60vh;
+    height: 600px;
   }
   .hero-container {
     justify-content: left;
@@ -511,7 +511,7 @@ footer {
   }
   /* header */
   .hero {
-    height: 90vh;
+    height: 700px;
   }
   .hero-container {
     padding: 7rem 4rem;

@@ -41,23 +41,26 @@ document.addEventListener("DOMContentLoaded", function () {
   var selectedCommentId;
   var commentForm = document.getElementById("comment-form");
   if (commentForm) {
-    commentForm.addEventListener("submit", function (e) {
+    commentForm.addEventListener("submit", async function (e) {
       e.preventDefault();
+      const textarea = this.content;
+      if (!textarea.value.trim()) {
+        alert("Comment cannot be empty or just spaces.");
+        textarea.focus();
+        return;
+      }
       const formData = new FormData(this);
-
-      fetch("/comments/add/", {
+      const res = await fetch("/comments/add/", {
         method: "POST",
         headers: { "X-CSRFToken": formData.get("csrfmiddlewaretoken") },
         body: formData
-      })
-        .then((res) => {
-          if (!res.ok) {
-            alert(res.statusText);
-            throw new Error(`HTTP error ${res.status}`);
-          }
-          return res.json();
-        })
-        .then((data) => {
+      });
+      try {
+        const data = await res.json();
+        if (!res.ok) {
+          alert(data.error || "Something went wrong");
+          throw new Error(`HTTP error ${data.error || "Something went wrong"}`);
+        } else {
           const noCommentsElement = document.getElementById("no-comments");
           if (noCommentsElement) {
             noCommentsElement.remove();
@@ -66,25 +69,26 @@ document.addEventListener("DOMContentLoaded", function () {
           if (commentsCount) {
             commentsCount.innerText = `( ${data.count} comments)`;
           }
-          var imagesrc = document.getElementById("profile-placeholder").dataset.src;
-          const image_url =
-            data.image_url == "placeholder" ? imagesrc : data.image_url;
-          // create element to add the new comment to comments box  
+          const image_url = data.image_url;
+          // create element to add the new comment to comments box
           const newComment = `
           <div class="comment" id="comment-${data.id}">
           <div class="d-inline">
-            <img src="${image_url}" class="rounded-circle" width="40" alt="user profile image">
+            <img src="${image_url}" class="rounded-circle" width="40" alt="user profile image" loading="lazy">
             <strong>${data.user}</strong>
              <div class="btn-group dropend comment-actions">
-                <button type="button" class="btn text-primary dropdown-toggle" data-bs-toggle="dropdown"
+                <button type="button" class="btn text-primary dropdown-toggle" 
+                        data-bs-toggle="dropdown"
+                        aria-label="click to edit our delete this comment"
                         aria-expanded="false">
                         <i class="fa-solid fa-gear"></i>
                 </button>
                 <ul class="dropdown-menu">
                   <li>
                     <button class="dropdown-item edit-btn"
-                       id="edit-btn-${data.id}"
-                        data-id="${data.id}">
+                            aria-label="click to edit this comment"
+                            id="edit-btn-${data.id}"
+                            data-id="${data.id}">
                         Edit
                     </button>
                   </li>
@@ -94,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <li>
                     <button class="dropdown-item delete-btn"
                             data-bs-toggle="modal" data-bs-target="#confirm-modal"
+                            aria-label="click to delete this comment"
                             id="delete-btn-${data.id}"
                             data-id="${data.id}">
                               Delete
@@ -110,13 +115,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     ${data.created}
                   </small>
               </p>
-              <textarea class="form-control my-3 edit-input d-none">${data.content}</textarea>
-              <button class="btn btn-sm action-button-secondary save-edit d-none"
-                      data-id="${data.id}"
-                       id="save-btn-${data.id}">Save</button>
-              <button class="btn btn-sm action-button-accent cancel-edit d-none"
-                      data-id="${data.id}"
-                       id="cancel-btn-${data.id}">Cancel</button>
+              <form class="comment-form d-none">
+               <div class="d-flex flex-column flex-wrap">
+                  <label for="comment-${data.id}" class="form-label">Your Comment</label>
+                  <textarea id="comment-${data.id}" class="form-control my-3 edit-input" required>${data.content}</textarea>
+                </div>
+                <button class="btn btn-sm action-button-secondary save-edit"
+                        aria-label="click to update the comment"
+                        data-id="${data.id}"
+                        id="save-btn-${data.id}">Save</button>
+                <button class="btn btn-sm action-button-accent cancel-edit"
+                        data-id="${data.id}"
+                        aria-label="click to cancel comment editing" 
+                        id="cancel-btn-${data.id}">Cancel</button>
+              </form>
             </div>
           </div>`;
           // add event listeners to action buttons for new comment
@@ -128,11 +140,13 @@ document.addEventListener("DOMContentLoaded", function () {
             handleEdit(editBtn);
           });
           const cancelBtn = document.getElementById(`cancel-btn-${data.id}`);
-          cancelBtn.addEventListener("click", function () {
+          cancelBtn.addEventListener("click", function (e) {
+            e.preventDefault();
             handelCancelEditing(cancelBtn);
           });
           const saveEditingBtn = document.getElementById(`save-btn-${data.id}`);
-          saveEditingBtn.addEventListener("click", function () {
+          saveEditingBtn.addEventListener("click", async function (e) {
+            e.preventDefault();
             handelSaveEditing(saveEditingBtn);
           });
           const deleteBtn = document.getElementById(`delete-btn-${data.id}`);
@@ -145,10 +159,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // reset the comment textarea
           this.reset();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     });
   }
 
@@ -166,10 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
    *  */
   function handleEdit(btn) {
     const parent = document.getElementById(`comment-content-${btn.dataset.id}`);
+    parent.querySelector(".comment-form").classList.remove("d-none");
     parent.querySelector(".comment-text").classList.add("d-none");
-    parent.querySelector(".edit-input").classList.remove("d-none");
-    parent.querySelector(".save-edit").classList.remove("d-none");
-    parent.querySelector(".cancel-edit").classList.remove("d-none");
     btn.classList.add("d-none");
   }
 
@@ -177,20 +189,19 @@ document.addEventListener("DOMContentLoaded", function () {
    *  add event listener to cancel button to cancel comment editing
    * */
   document.querySelectorAll(".cancel-edit").forEach((btn) => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
       handelCancelEditing(btn);
     });
   });
 
-   /**
+  /**
    *  handel the comment cancel editing action
    * */
   function handelCancelEditing(btn) {
     const parent = document.getElementById(`comment-content-${btn.dataset.id}`);
+    parent.querySelector(".comment-form").classList.add("d-none");
     parent.querySelector(".comment-text").classList.remove("d-none");
-    parent.querySelector(".edit-input").classList.add("d-none");
-    parent.querySelector(".save-edit").classList.add("d-none");
-    parent.querySelector(".cancel-edit").classList.add("d-none");
     document
       .getElementById(`edit-btn-${btn.dataset.id}`)
       .classList.remove("d-none");
@@ -200,7 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
    *  add event listener to update comment
    * */
   document.querySelectorAll(".save-edit").forEach((btn) => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", async function (e) {
+      e.preventDefault();
       handelSaveEditing(btn);
     });
   });
@@ -208,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    *  handel the update comment
    * */
-  function handelSaveEditing(btn) {
+  async function handelSaveEditing(btn) {
     const commentId = btn.dataset.id;
     const parent = document.getElementById(`comment-content-${commentId}`);
     const newContent = parent.querySelector(".edit-input").value;
@@ -219,35 +231,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData();
     formData.append("content", newContent);
     loaderToggel(false);
-    fetch(`/comments/${commentId}/edit/`, {
+    const res = await fetch(`/comments/${commentId}/edit/`, {
       method: "POST",
       headers: {
         "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
           .value
       },
       body: formData
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          const newContent = `${data.content}<br>
-                              <small class="comment-time">
-                                   ${data.created}
-                              </small>`;
-          parent.querySelector(".comment-text").innerHTML = newContent;
-          parent.querySelector(".comment-text").classList.remove("d-none");
-          parent.querySelector(".edit-input").classList.add("d-none");
-          parent.querySelector(".save-edit").classList.add("d-none");
-          parent.querySelector(".cancel-edit").classList.add("d-none");
-          document
-            .getElementById(`edit-btn-${commentId}`)
-            .classList.remove("d-none");
-        }
-      })
-      .finally(() => {
-        loaderToggel(true);
-        showToast("Comment was updated successfully.");
-      });
+    });
+    try {
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Something went wrong");
+        throw new Error(`HTTP error ${data.error || "Something went wrong"}`);
+      } else {
+        const newContent = `${data.content}<br>
+        <small class="comment-time">
+             ${data.created}
+        </small>`;
+        parent.querySelector(".comment-text").innerHTML = newContent;
+        parent.querySelector(".comment-text").classList.remove("d-none");
+        parent.querySelector(".comment-form").classList.add("d-none");
+        document
+          .getElementById(`edit-btn-${commentId}`)
+          .classList.remove("d-none");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      loaderToggel(true);
+      showToast("Comment was updated successfully.");
+    }
   }
 
   /**
@@ -317,16 +331,19 @@ document.addEventListener("DOMContentLoaded", function () {
    *  show success message as a bootstrap toast
    *  */
   function showToast(message) {
-    const toast = document.querySelector("#message-toast .response-toast");
     const content = document.querySelector(
       "#message-toast .response-toast .toast-body"
     );
     content.innerText = message;
-    new bootstrap.Toast(toast, { delay: 4500 }).show();
-    setTimeout(() => toast.remove(), 5000);
+    const btoast = bootstrap.Toast.getOrCreateInstance(
+      document.querySelector("#message-toast .response-toast"),
+      { delay: 4500 }
+    );
+    btoast.show();
+    setTimeout(() => btoast.hide(), 5000);
   }
 
-  /** 
+  /**
    * close modal
    * */
   function closeModal() {
@@ -335,9 +352,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     modal.hide();
   }
-  
-  /** 
-   * loader show/hide 
+
+  /**
+   * loader show/hide
    * */
   function loaderToggel(hide) {
     const loader = document.getElementById("loader");

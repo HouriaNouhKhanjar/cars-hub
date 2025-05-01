@@ -1,3 +1,4 @@
+from functools import cached_property
 from cloudinary.models import CloudinaryField
 import cloudinary.uploader
 from django.db.models.signals import post_delete
@@ -23,6 +24,14 @@ class UserProfile(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    @cached_property
+    def image_url(self):
+        url = self.profile_image.url
+        # Replace http with https to improve performance
+        if 'placeholder' not in url:
+            return url.replace("http://", "https://")
+        return '/static/images/nobody.webp'
+
     def __str__(self):
         return self.user.username
 
@@ -35,13 +44,13 @@ class Category(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     image = CloudinaryField('image', default='placeholder')
 
-    @property
+    @cached_property
     def image_url(self):
         url = self.image.url
-        # Returns the first image URL if available
+        # Replace http with https to improve performance
         if 'placeholder' not in url:
             return url.replace("http://", "https://")
-        return 'static/images/placeholder.webp'
+        return '/static/images/placeholder.webp'
 
     def __str__(self):
         return f"{self.name}"
@@ -71,13 +80,13 @@ class Car(models.Model):
     def total_likes(self):
         return self.likes.count()
 
-    @property
+    @cached_property
     def image_url(self):
         # Returns the first image URL if available
         first_image = self.images.first()
         if first_image and 'placeholder' not in first_image.image.url:
-            return first_image.optimize_url()
-        return 'static/images/placeholder.webp'
+            return first_image.optimize_url
+        return '/static/images/placeholder.webp'
 
     def __str__(self):
         return f"{self.title} | \
@@ -114,6 +123,7 @@ class CarImage(models.Model):
             print("Failed to extract public ID:", e)
             return None
 
+    @cached_property
     def optimize_url(self):
         """
         Replace http with https and
@@ -122,6 +132,13 @@ class CarImage(models.Model):
         """
         return re.sub(r'/upload/', '/upload/c_fill,w_400,h_300/f_auto,q_auto/',
                       self.image.url.replace("http://", "https://"))
+
+    @cached_property
+    def https_url(self):
+        """
+        Replace http with https Cloudinary URL.
+        """
+        return self.image.url.replace("http://", "https://")
 
     def __str__(self):
         return f"{self.get_cloudinary_public_id()}"

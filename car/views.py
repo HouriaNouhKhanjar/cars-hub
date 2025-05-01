@@ -3,6 +3,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.utils.timesince import timesince
 from django.urls import reverse_lazy
 from django.core.cache import cache
@@ -62,6 +64,7 @@ def profile(request):
     })
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CarListView(ListView):
     """
     Returns all published cars in :model:`car.Car`
@@ -124,6 +127,7 @@ class CarListView(ListView):
         return context
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class UserCarListView(LoginRequiredMixin, ListView):
     """
     Returns all user cars in :model:`car.Car`
@@ -170,7 +174,11 @@ class UserCarListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         # Add a list of categories to filter by
-        context['categories'] = Category.objects.all()
+        categories = cache.get('cached_categories')
+        if not categories:
+            categories = Category.objects.all()
+            cache.set('cached_categories', categories, 60 * 10)
+        context['categories'] = categories
 
         # Add search query to preserve the search term
         context['search'] = self.request.GET.get('search', '')
@@ -267,6 +275,14 @@ class CarDetailView(DetailView):
     model = Car
     template_name = 'car/car-detail.html'
     context_object_name = 'car'
+
+    def get_object(self, queryset=None):
+        queryset = Car.objects.select_related('owner', 'category')\
+                   .prefetch_related(
+                       'images',
+                       'likes',
+                       'comments__user__user_profile')
+        return super().get_object(queryset=queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -406,16 +422,17 @@ def add_comment(request):
     if request.method not in ["POST"]:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     try:
-        content = request.POST.get('content')
+        content = request.POST.get('content', '').strip()
         car_id = request.POST.get('car_id')
+        if not content:
+            return JsonResponse({'error': 'Comment cannot be empty.'},
+                                status=400)
         car = get_object_or_404(Car, pk=car_id)
         comment = Comment.objects.create(user=request.user, car=car,
                                          content=content)
-        profile = comment.user.user_profile
-        image = 'placeholder' if not profile or \
-            'placeholder' in profile.profile_image.url \
-            else profile.profile_image.url
 
+        image = comment.user.user_profile.image_url
+        print(image)
         return JsonResponse({
             'id': comment.id,
             'user': comment.user.username,
@@ -425,7 +442,6 @@ def add_comment(request):
             'count': car.comments.count()
         })
     except Exception as e:
-        messages.error(request, f"Comment update failed: {e}")
         return JsonResponse({'error': f'Comment update failed: {e}'},
                             status=500)
 
@@ -446,7 +462,11 @@ def edit_comment(request, pk):
     if comment.user != request.user:
         return JsonResponse({'error': 'Forbidden'}, status=403)
     try:
-        comment.content = request.POST.get('content')
+        content = request.POST.get('content', '').strip()
+        if not content:
+            return JsonResponse({'error': 'Comment cannot be empty.'},
+                                status=400)
+        comment.content = content
         comment.save()
         return JsonResponse({'success': True,
                              'content': comment.content,
@@ -454,7 +474,6 @@ def edit_comment(request, pk):
                                           ago"
                              })
     except Exception as e:
-        messages.error(request, f"Comment update failed: {e}")
         return JsonResponse({'error': f'Comment update failed: {e}'},
                             status=500)
 
