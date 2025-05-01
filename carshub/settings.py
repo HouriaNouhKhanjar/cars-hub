@@ -105,7 +105,6 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-
 ROOT_URLCONF = 'carshub.urls'
 
 TEMPLATES = [

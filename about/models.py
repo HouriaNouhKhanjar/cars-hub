@@ -14,6 +14,14 @@ class About(models.Model):
     description = models.TextField()
     updated_on = models.DateTimeField(auto_now=True)
 
+    @property
+    def image_url(self):
+        url = self.image.url
+        # Returns the first image URL if available
+        if 'placeholder' not in url:
+            return url.replace("http://", "https://")
+        return 'static/images/about.webp'
+
     def __str__(self):
         return self.title
 
