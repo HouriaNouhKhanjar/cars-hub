@@ -76,10 +76,6 @@
   border: none;
   border-bottom: 1px solid;
   border-radius: unset;
-  -webkit-border-radius:;
-  -moz-border-radius:;
-  -ms-border-radius:;
-  -o-border-radius:;
 }
 
 #profile-form input:hover,
