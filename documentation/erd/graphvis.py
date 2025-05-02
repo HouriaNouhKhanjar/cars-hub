@@ -6,34 +6,39 @@ erd_detailed = Digraph('ERD_Detailed', filename='cars_hub_erd', format='png')
 # Entities with attributes
 entities_detailed = {
     "User": [
-        "UserID (PK, INT)", "Name (VARCHAR)", "Email (VARCHAR)", 
-        "Phone (VARCHAR)", "Password (VARCHAR)", "ProfileImageURL (TEXT)", 
+        "UserID (PK, INT)", "Username (VARCHAR)", "Email (VARCHAR)",
+        "Password (VARCHAR)"
+    ],
+    "UserProfile": [
+        "UserProfileID (PK, INT)", "UserID (FK, INT)",
+        "Phone (VARCHAR)", "ProfileImageURL (TEXT)",
         "CreatedDate (DATETIME)"
     ],
     "Car": [
-        "CarID (PK, INT)", "UserID (FK, INT)", "Title (VARCHAR)", "Model (VARCHAR)",
-        "Brand (VARCHAR)", "Year (INT)", "CategoryID (FK, INT)", 
-        "Publish (INT)", "Description (TEXT)",
+        "CarID (PK, INT)", "UserID (FK, INT)", "Title (VARCHAR)",
+        "Model (VARCHAR)", "Brand (VARCHAR)", "Age (INT)",
+        "CategoryID (FK, INT)", "Approved (INT)", "Description (TEXT)",
     ],
     "Comment": [
-        "CommentID (PK, INT)", "UserID (FK, INT)", "CarID (FK, INT)", 
-        "Comment (TEXT)", "CreatedDate (DATETIME)"
+        "CommentID (PK, INT)", "UserID (FK, INT)", "CarID (FK, INT)",
+        "Content (TEXT)", "CreatedDate (DATETIME)"
     ],
     "Like": [
         "LikeID (PK, INT)", "UserID (FK, INT)", "CarID (FK, INT)"
     ],
     "Car_Category": [
-        "CategoryID (PK, INT)", "CategoryName (VARCHAR)"
+        "CategoryID (PK, INT)", "CategoryName (VARCHAR)",
+        "ImageURL (TEXT)", "CreatedDate (DATETIME)"
     ],
     "Car_Images": [
         "ImageID (PK, INT)", "CarID (FK, INT)", "ImageURL (TEXT)"
     ],
     "Inquiry": [
-        "InquiryID (PK, INT)", "Email (VARCHAR)", "Name (VARCHAR)",  "Message (TEXT)",
-        "Status (INT)", "Date (DATETIME)"
+        "InquiryID (PK, INT)", "Email (VARCHAR)", "Name (VARCHAR)",
+        "Message (TEXT)", "Read (INT)", "CreatedDate (DATETIME)"
     ],
     "About": [
-        "AboutID (PK, INT)", "Content (TEXT)", "ImageURL (TEXT)", 
+        "AboutID (PK, INT)", "Description (TEXT)", "ImageURL (TEXT)", 
         "UpdatedDate (DATETIME)"
     ]
 }
@@ -45,6 +50,7 @@ for entity, attributes in entities_detailed.items():
 
 # Relationships
 relations_detailed = [
+    ("User", "UserProfile"),
     ("Car_Category", "Car"),
     ("Car", "Car_Images"),
     ("User", "Comment"),
