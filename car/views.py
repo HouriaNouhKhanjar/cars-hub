@@ -428,7 +428,6 @@ def add_comment(request):
                                          content=content)
 
         image = comment.user.user_profile.image_url
-        print(image)
         return JsonResponse({
             'id': comment.id,
             'user': comment.user.username,
