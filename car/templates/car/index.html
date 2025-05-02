@@ -49,12 +49,11 @@
                         <div class="carousel-item  {% if not selected_category %} active {% endif %}">
                             <div
                                 class="col-12 col-md-6 col-lg-4 col-xl-3 {% if not selected_category %} selected {% endif %}">
-                                <a class="page-link text-accent" href="?search={{ search }}" aria-label="click to reset category filter">
+                                <a class="page-link text-accent" href="?search={{ search }}"
+                                    aria-label="click to reset category filter">
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top" src="{% static 'images/placeholder.webp' %}"
-                                            alt="Category image cap"
-                                            loading="lazy"
-                                            decoding="async"
+                                            alt="Category image cap" loading="lazy" decoding="async"
                                             referrerpolicy="strict-origin">
                                         <div class="card-body">
                                             <h3 class="card-title">
@@ -71,14 +70,12 @@
                             class="carousel-item  {% if  selected_category|add:''|stringformat:'s' == category.pk|stringformat:'s' %}  active {% endif %}">
                             <div
                                 class="col-12 col-md-6 col-lg-4 col-xl-3  {% if  selected_category|add:''|stringformat:'s' == category.pk|stringformat:'s' %} selected {% endif %}">
-                                <a class="page-link text-accent" aria-label="click to filter cars list by {{category.name}}" 
+                                <a class="page-link text-accent"
+                                    aria-label="click to filter cars list by {{category.name}}"
                                     href="?search={{ search }}&category={{category.pk}}">
                                     <div class="card m-2" aria-hidden="true">
-                                        <img class="card-img-top"
-                                            src="{{category.image_url}}"
-                                            referrerpolicy="strict-origin"
-                                            alt="Category image cap"
-                                            loading="lazy">
+                                        <img class="card-img-top" src="{{category.image_url}}"
+                                            referrerpolicy="strict-origin" alt="Category image cap" loading="lazy">
                                         <div class="card-body">
                                             <h3 class="card-title">
                                                 {{category.name}}
@@ -109,11 +106,8 @@
                     <div class="col-md-6 col-lg-4 p-3">
                         <a href="{% url 'car_detail' car.pk %}" aria-label="Click to go to {{car.title}} detail page">
                             <div class="card car-item text-start">
-                                <img class="card-img"
-                                    src="{{car.image_url}}"
-                                    referrerpolicy="strict-origin"
-                                    loading="lazy"
-                                    alt="Car image cap">
+                                <img class="card-img" src="{{car.image_url}}" referrerpolicy="strict-origin"
+                                    loading="lazy" alt="Car image cap">
                                 <div class="card-img-overlay">
                                     <h3 class="card-title fs-5">{{car.title}}</h3>
                                     <p class="card-text">
@@ -127,7 +121,7 @@
                                     </p>
                                 </div>
                             </div>
-                         </a>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
@@ -143,20 +137,18 @@
                     <ul class="pagination justify-content-center pt-4">
                         {% if page_obj.has_previous %}
                         <li class="page-item">
-                            <a class="page-link text-accent"
-                               aria-label="go to previous cars list page"
+                            <a class="page-link text-accent" aria-label="go to previous cars list page"
                                 href="?page={{ page_obj.previous_page_number }}&search={{ search }}&category={{ selected_category }}">
                                 <i class="fa-solid fa-backward"></i>
                             </a>
                         </li>
                         {% endif %}
-                        <li class="page-item p-2"> 
+                        <li class="page-item p-2">
                             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
                         </li>
                         {% if page_obj.has_next %}
                         <li class="page-item">
-                            <a class="page-link text-accent"
-                               aria-label="go to next cars list page"
+                            <a class="page-link text-accent" aria-label="go to next cars list page"
                                 href="?page={{ page_obj.next_page_number }}&search={{ search }}&category={{ selected_category }}">
                                 <i class="fa-solid fa-forward"></i>
                             </a>

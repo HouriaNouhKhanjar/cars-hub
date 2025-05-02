@@ -31,7 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
           this.classList.toggle("active", data.liked);
           this.blur();
         })
-        .catch((err) => console.error("Error:", err));
+        .catch((err) => {
+          alert(`Error while liking this car, ${err}`);
+          console.error("Error:", err);
+        }
+      );
     });
   });
 
@@ -292,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             closeModal();
-            alert(res.statusText);
+            alert(`Couldn't delete the comment, ${res.statusText}`);
             throw new Error(`HTTP error ${res.status}`);
           }
           return res.json();

@@ -173,7 +173,7 @@ USE_TZ = True
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Optional: set a custom Cache-Control header
-WHITENOISE_MAX_AGE = 31536000  
+WHITENOISE_MAX_AGE = 31536000
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]

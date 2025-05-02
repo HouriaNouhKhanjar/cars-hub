@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             closeModal();
-            alert(res.statusText);
+            alert(`Couldn't delete the car, ${res.statusText}`);
             throw new Error(`HTTP error ${res.status}`);
           }
           return res.json();
@@ -77,13 +77,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // show success message as a bootstrap toast
   function showToast(message) {
-    const toast = document.querySelector("#message-toast .response-toast");
     const content = document.querySelector(
       "#message-toast .response-toast .toast-body"
     );
     content.innerText = message;
-    new bootstrap.Toast(toast, { delay: 4500 }).show();
-    setTimeout(() => toast.remove(), 5000);
+    const btoast = bootstrap.Toast.getOrCreateInstance(
+      document.querySelector("#message-toast .response-toast"),
+      { delay: 4500 }
+    );
+    btoast.show();
+    setTimeout(() => btoast.hide(), 5000);
   }
 
   //close modal

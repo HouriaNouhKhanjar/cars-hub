@@ -16,11 +16,8 @@
                 <div class="carousel-inner">
                     {% for img in images %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ img.https_url }}" class="d-block w-100"
-                        loading="lazy"
-                        decoding="async"
-                        referrerpolicy="strict-origin" 
-                        alt="{{ car.title }} image">
+                        <img src="{{ img.https_url }}" class="d-block w-100" loading="lazy" decoding="async"
+                            referrerpolicy="strict-origin" alt="{{ car.title }} image">
                     </div>
                     {% endfor %}
                 </div>
@@ -29,11 +26,8 @@
                     <button type="button" data-bs-target="#carCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
                         class="{% if forloop.first %}active{% endif %} thumbnail" aria-current="true"
                         aria-label="Slide {{ forloop.counter }}">
-                        <img src="{{ img.https_url }}" class="d-block w-100" 
-                             alt="{{ car.title }} image" 
-                             loading="lazy"
-                             decoding="async"
-                             referrerpolicy="strict-origin">
+                        <img src="{{ img.https_url }}" class="d-block w-100" alt="{{ car.title }} image" loading="lazy"
+                            decoding="async" referrerpolicy="strict-origin">
                     </button>
                     {% endfor %}
                 </div>
@@ -108,9 +102,7 @@
                     <div class="comment" id="comment-{{ comment.id }}">
                         <div class="d-inline">
                             <img src="{{ comment.user.user_profile.image_url }}" class="rounded-circle" width="40"
-                                alt="{{ comment.user.username }} profile image"
-                                loading="lazy"
-                                decoding="async"
+                                alt="{{ comment.user.username }} profile image" loading="lazy" decoding="async"
                                 referrerpolicy="strict-origin">
                             <strong>{{ comment.user.username }}</strong>
                             {% if comment.user == user %}
@@ -153,7 +145,8 @@
                             <form class="comment-form d-none">
                                 <div class="d-flex flex-column flex-wrap">
                                     <label for="input-comment-{{ comment.pk }}" class="form-label">Your Comment</label>
-                                    <textarea id="input-comment-{{ comment.pk }}" class="my-3 edit-input" required>{{ comment.content }}</textarea>
+                                    <textarea id="input-comment-{{ comment.pk }}" class="my-3 edit-input"
+                                        required>{{ comment.content }}</textarea>
                                 </div>
                                 <button class="btn btn-sm action-button-secondary save-edit"
                                     aria-label="Update this comment" data-id="{{ comment.pk }}">Save</button>
@@ -169,7 +162,7 @@
                 <h4>Leave a comment</h4>
                 {% csrf_token %}
                 <label for="add-new-comment" class="form-label">Your Comment</label>
-                <textarea id="add-new-comment" name="content"  rows="10" class="w-100" required></textarea>
+                <textarea id="add-new-comment" name="content" rows="10" class="w-100" required></textarea>
                 <input type="hidden" name="car_id" value="{{ car.id }}">
                 <br>
                 <button type="submit" class="btn btn-small action-button-secondary"

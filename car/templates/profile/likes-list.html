@@ -20,16 +20,12 @@
       <tr id="row-car-{{car.pk}}">
         <td>{{ forloop.counter }}</td>
         <td>
-          <img src="{{ car.image_url }}" alt="{{ car.title }} image" 
-               class="img-thumbnail" width="80" height="60"
-               loading="lazy"
-               decoding="async"
-               referrerpolicy="strict-origin">
+          <img src="{{ car.image_url }}" alt="{{ car.title }} image" class="img-thumbnail" width="80" height="60"
+            loading="lazy" decoding="async" referrerpolicy="strict-origin">
         </td>
         <td>
-          <a href="{% url 'car_detail' car.pk %}"
-           target="_blank">
-           {{ car.title }}
+          <a href="{% url 'car_detail' car.pk %}" target="_blank">
+            {{ car.title }}
           </a>
         </td>
       </tr>
@@ -44,28 +40,26 @@
 
 <!-- Pagination -->
 {% if is_paginated %}
-  <nav>
-    <ul class="pagination justify-content-center">
-      {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link action-button-accent"
-          href="?page={{ page_obj.previous_page_number }}">
-          Previous
-          </a>
-        </li>
-      {% endif %}
-      <li class="page-item p-2">
-         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
-      </li>
-      {% if page_obj.has_next %}
-        <li class="page-item">
-          <a class="page-link action-button-accent" 
-          href="?page={{ page_obj.next_page_number }}">
-            Next
-            </a>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link action-button-accent" href="?page={{ page_obj.previous_page_number }}">
+        Previous
+      </a>
+    </li>
+    {% endif %}
+    <li class="page-item p-2">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </li>
+    {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link action-button-accent" href="?page={{ page_obj.next_page_number }}">
+        Next
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
 {% endif %}
 {% endblock %}

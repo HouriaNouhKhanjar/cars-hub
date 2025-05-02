@@ -147,8 +147,8 @@ class UserCarListView(LoginRequiredMixin, ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Car.objects.all()
-        queryset = queryset.filter(owner=self.request.user)
+        queryset = Car.objects.select_related('category', 'owner') \
+                   .prefetch_related('images').filter(owner=self.request.user)
 
         # Search functionality based on title or model or brand
         search_query = self.request.GET.get('search', '')

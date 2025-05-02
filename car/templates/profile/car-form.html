@@ -31,7 +31,8 @@
                         <div class="col-12 col-md-4 position-relative" id="image-preview-{{ image.id }}">
                             <div class="border rounded shadow-sm overflow-hidden position-relative"
                                 data-image-id="{{ image.id }}">
-                                <img src="{{ image.image.url }}" class="img-fluid rounded w-100" alt="preview">
+                                <img src="{{ image.https_url }}" class="img-fluid rounded w-100" alt="preview"
+                                    loading="lazy" decoding="async" referrerpolicy="strict-origin">
                                 <button type="button"
                                     class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 delete-image-btn"
                                     data-bs-toggle="modal" data-bs-target="#confirm-modal"
