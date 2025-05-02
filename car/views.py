@@ -3,8 +3,6 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, JsonResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.utils.timesince import timesince
 from django.urls import reverse_lazy
 from django.core.cache import cache
@@ -64,7 +62,6 @@ def profile(request):
     })
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class CarListView(ListView):
     """
     Returns all published cars in :model:`car.Car`
@@ -127,7 +124,6 @@ class CarListView(ListView):
         return context
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class UserCarListView(LoginRequiredMixin, ListView):
     """
     Returns all user cars in :model:`car.Car`

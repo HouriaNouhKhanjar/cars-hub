@@ -16,9 +16,11 @@
                 <div class="carousel-inner">
                     {% for img in images %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ img.https_url }}" class="d-block w-100" 
-                             alt="{{ car.title }} image"
-                             loading="lazy">
+                        <img src="{{ img.https_url }}" class="d-block w-100"
+                        loading="lazy"
+                        decoding="async"
+                        referrerpolicy="strict-origin" 
+                        alt="{{ car.title }} image">
                     </div>
                     {% endfor %}
                 </div>
@@ -28,7 +30,10 @@
                         class="{% if forloop.first %}active{% endif %} thumbnail" aria-current="true"
                         aria-label="Slide {{ forloop.counter }}">
                         <img src="{{ img.https_url }}" class="d-block w-100" 
-                             alt="{{ car.title }} image" loading="lazy">
+                             alt="{{ car.title }} image" 
+                             loading="lazy"
+                             decoding="async"
+                             referrerpolicy="strict-origin">
                     </button>
                     {% endfor %}
                 </div>
@@ -103,7 +108,10 @@
                     <div class="comment" id="comment-{{ comment.id }}">
                         <div class="d-inline">
                             <img src="{{ comment.user.user_profile.image_url }}" class="rounded-circle" width="40"
-                                alt="{{ comment.user.username }} profile image" loading="lazy">
+                                alt="{{ comment.user.username }} profile image"
+                                loading="lazy"
+                                decoding="async"
+                                referrerpolicy="strict-origin">
                             <strong>{{ comment.user.username }}</strong>
                             {% if comment.user == user %}
                             <div class="btn-group dropend comment-actions">

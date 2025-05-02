@@ -26,10 +26,15 @@ class UserProfile(models.Model):
 
     @cached_property
     def image_url(self):
+        """
+        Replace Http with Https in url path
+        and add resize and cache after uploud
+        """
         url = self.profile_image.url
-        # Replace http with https to improve performance
         if 'placeholder' not in url:
-            return url.replace("http://", "https://")
+            return re.sub(r'/upload/',
+                          '/upload/c_fill,w_150,h_150/f_auto,q_auto/',
+                          url.replace("http://", "https://"))
         return '/static/images/nobody.webp'
 
     def __str__(self):

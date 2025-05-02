@@ -52,7 +52,10 @@
                                 <a class="page-link text-accent" href="?search={{ search }}" aria-label="click to reset category filter">
                                     <div class="card m-2" aria-hidden="true">
                                         <img class="card-img-top" src="{% static 'images/placeholder.webp' %}"
-                                            alt="Category image cap">
+                                            alt="Category image cap"
+                                            loading="lazy"
+                                            decoding="async"
+                                            referrerpolicy="strict-origin">
                                         <div class="card-body">
                                             <h3 class="card-title">
                                                 All Categories
