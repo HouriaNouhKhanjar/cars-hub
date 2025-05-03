@@ -29,7 +29,8 @@ class UserProfile(models.Model):
                                 primary_key=True,
                                 related_name="user_profile")
     profile_image = CloudinaryField('image', default='profile-placeholder')
-    phone = models.CharField(validators=[phone_validator], max_length=17, blank=True)
+    phone = models.CharField(validators=[phone_validator],
+                             max_length=17, blank=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     @cached_property
