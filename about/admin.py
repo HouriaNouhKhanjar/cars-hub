@@ -21,3 +21,4 @@ class InquiryAdmin(admin.ModelAdmin):
     list_editable = ('read',)
     search_fields = ['name', 'email']
     list_filter = ('read', 'created_on',)
+    list_per_page = 10

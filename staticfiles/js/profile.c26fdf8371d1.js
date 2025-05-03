@@ -75,33 +75,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-  // show message as a bootstrap toast
-  function showToast(message, bgColorClass) {
-    const toastEl = document.getElementById("message-toast");
-
-    // Get the current scroll position and viewport size
-    const scrollTop = window.scrollY;
-    const viewportHeight = window.innerHeight;
-    const toastHeight = toastEl.offsetHeight;
-
-    // Position: center of the visible viewport
-    toastEl.style.top = `${scrollTop + (viewportHeight - toastHeight) / 2}px`;
-    toastEl.style.right = `5%`;
-
-    // Add bg color class
-    toastEl.classList.forEach((cls) => {
-      if (cls.startsWith("text-bg-")) {
-        toastEl.classList.remove(cls);
-      }
-    });
-    toastEl.classList.add(bgColorClass);
-
-    // Display the message
-    const content = document.querySelector("#message-toast .toast-body");
+  // show success message as a bootstrap toast
+  function showToast(message) {
+    const content = document.querySelector(
+      "#message-toast .response-toast .toast-body"
+    );
     content.innerText = message;
-    const btoast = bootstrap.Toast.getOrCreateInstance(toastEl, {
-      delay: 4500
-    });
+    const btoast = bootstrap.Toast.getOrCreateInstance(
+      document.querySelector("#message-toast .response-toast"),
+      { delay: 4500 }
+    );
     btoast.show();
     setTimeout(() => btoast.hide(), 5000);
   }

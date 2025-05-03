@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             closeModal();
-            showToast(`Couldn't delete the image, ${res.statusText}`);
+            alert(`Couldn't delete the image, ${res.statusText}`);
             throw new Error(`HTTP error ${res.status}`);
           }
           return res.json();
@@ -150,14 +150,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Position: center of the visible viewport
     toastEl.style.top = `${scrollTop + (viewportHeight - toastHeight) / 2}px`;
-    toastEl.style.right = `5%`;
+    toastEl.style.left = `50%`;
+    toastEl.style.transform = `translateX(-50%)`;
     
-    // Add bg color class
-    toastEl.classList.forEach(cls => {
-      if (cls.startsWith("text-bg-")) {
-        toastEl.classList.remove(cls);
-      }
-    });
+    // Add bg color class 
     toastEl.classList.add(bgColorClass);
 
     // Display the message
@@ -166,7 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     content.innerText = message;
     const btoast = bootstrap.Toast.getOrCreateInstance(
-      toastEl, { delay: 4500 }
+      toastEl,
+      { delay: 4500 }
     );
     btoast.show();
     setTimeout(() => btoast.hide(), 5000);

@@ -48,6 +48,7 @@ class CarAdmin(SummernoteModelAdmin):
     search_fields = ['title', 'owner', 'model', 'brand', 'category']
     list_filter = ('approved', 'created_on', 'category',)
     summernote_fields = ('description',)
+    list_per_page = 10
 
 
 @admin.register(Comment)
@@ -57,3 +58,4 @@ class CommentAdmin(admin.ModelAdmin):
     """
     list_display = ('user', 'car', 'created',)
     list_filter = ('created',)
+    list_per_page = 10

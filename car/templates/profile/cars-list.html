@@ -11,7 +11,8 @@
 <form method="GET" class="row g-3 align-items-end mb-4">
   <div class="col-md-5">
     <input type="text" name="search" value="{{ search }}" class="form-control"
-      placeholder="Search by title or brand or model">
+      placeholder="Search by title or brand or model"
+      pattern="\S+" title="No spaces allowed">
   </div>
   <div class="col-md-4">
     <select name="category" class="form-select">

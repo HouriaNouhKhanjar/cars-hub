@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   /**
-   *  show message as a bootstrap toast
+   *  show success message as a bootstrap toast
    *  */
   function showToast(message, bgColorClass) {
     const toastEl = document.getElementById("message-toast");

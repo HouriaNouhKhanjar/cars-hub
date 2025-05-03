@@ -1,4 +1,8 @@
 /* Profile Container */
+#profile-container{
+  max-width: 85%;
+}
+
 #profile-container,
 #profile-container .row {
   padding: unset !important;
@@ -35,9 +39,6 @@
 }
 
 /* Profile Base */
-#profile-container .table {
-  box-shadow: 2px 3px 4px rgb(0 0 0 / 58%);
-}
 
 #profile-container .dropdown button,
 #profile-container .dropdown ul {
@@ -64,6 +65,10 @@
   height: auto;
   border: 2px solid rgba(235, 235, 235, 0.877);
   border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
 
 #profile-container input[type="file"] {

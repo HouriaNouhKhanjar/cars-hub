@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // show message as a bootstrap toast
   function showToast(message, bgColorClass) {
+    console.log('ffff');
     const toastEl = document.getElementById('message-toast');
 
     // Get the current scroll position and viewport size
@@ -150,23 +151,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Position: center of the visible viewport
     toastEl.style.top = `${scrollTop + (viewportHeight - toastHeight) / 2}px`;
-    toastEl.style.right = `5%`;
+    toastEl.style.left = `50%`;
+    toastEl.style.transform = `translateX(-50%)`;
     
-    // Add bg color class
-    toastEl.classList.forEach(cls => {
-      if (cls.startsWith("text-bg-")) {
-        toastEl.classList.remove(cls);
-      }
-    });
+    // Add bg color class 
     toastEl.classList.add(bgColorClass);
 
+    console.log(toastEl);
     // Display the message
     const content = document.querySelector(
       "#message-toast .toast-body"
     );
     content.innerText = message;
     const btoast = bootstrap.Toast.getOrCreateInstance(
-      toastEl, { delay: 4500 }
+      toastEl,
+      { delay: 4500 }
     );
     btoast.show();
     setTimeout(() => btoast.hide(), 5000);

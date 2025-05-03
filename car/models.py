@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from functools import cached_property
 from cloudinary.models import CloudinaryField
 import cloudinary.uploader
@@ -13,6 +14,13 @@ import re
 APPROVED = ((0, "Not Approved"), (1, "Approved"))
 
 
+phone_validator = RegexValidator(
+    regex=r'^\+?1?\d{9,15}$',
+    message="Phone number must be in the format: '+999999999'."
+            + "Up to 15 digits allowed."
+)
+
+
 class UserProfile(models.Model):
     """
     Stores a single profile entry related to :model:`auth.User`.
@@ -21,7 +29,7 @@ class UserProfile(models.Model):
                                 primary_key=True,
                                 related_name="user_profile")
     profile_image = CloudinaryField('image', default='profile-placeholder')
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(validators=[phone_validator], max_length=17, blank=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     @cached_property
@@ -72,7 +80,7 @@ class Car(models.Model):
     title = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
     brand = models.CharField(max_length=200)
-    age = models.IntegerField()
+    age = models.PositiveIntegerField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE,
                               related_name="user_cars")
     category = models.ForeignKey(Category, on_delete=models.CASCADE,

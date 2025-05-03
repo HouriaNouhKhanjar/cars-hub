@@ -150,14 +150,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Position: center of the visible viewport
     toastEl.style.top = `${scrollTop + (viewportHeight - toastHeight) / 2}px`;
-    toastEl.style.right = `5%`;
+    toastEl.style.left = `50%`;
+    toastEl.style.transform = `translateX(-50%)`;
     
-    // Add bg color class
-    toastEl.classList.forEach(cls => {
-      if (cls.startsWith("text-bg-")) {
-        toastEl.classList.remove(cls);
-      }
-    });
+    // Add bg color class 
     toastEl.classList.add(bgColorClass);
 
     // Display the message
@@ -165,8 +161,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "#message-toast .toast-body"
     );
     content.innerText = message;
-    const btoast = bootstrap.Toast.getOrCreateInstance(
-      toastEl, { delay: 4500 }
+    const btoast = bootstrap.Toast(
+      toastEl,
+      { delay: 4500 }
     );
     btoast.show();
     setTimeout(() => btoast.hide(), 5000);

@@ -24,23 +24,16 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (!data.error) {
-            const countSpan = document.getElementById(`like-count-${carId}`);
-            countSpan.textContent = data.total_likes;
-            const labelSpan = document.getElementById(`like-label-${carId}`);
-            labelSpan.textContent = data.liked ? "liked" : "like";
-            this.classList.toggle("active", data.liked);
-            this.blur();
-            showToast(
-              `You have ${data.liked ? "liked" : "disliked"} this car`,
-              "text-bg-success"
-            );
-          } else {
-            showToast(data.error, "text-bg-danger");
-          }
+          const countSpan = document.getElementById(`like-count-${carId}`);
+          countSpan.textContent = data.total_likes;
+          const labelSpan = document.getElementById(`like-label-${carId}`);
+          labelSpan.textContent = data.liked ? "liked" : "like";
+          this.classList.toggle("active", data.liked);
+          this.blur();
+          showToast(`You have ${data.liked? 'liked': 'disliked'} this car`,"text-bg-success");
         })
         .catch((err) => {
-          showToast(`Error while liking this car, ${err}`, "text-bg-danger");
+          showToast(`Error while liking this car, ${err}`,"text-bg-danger");
           console.error("Error:", err);
         });
     });
@@ -56,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       const textarea = this.content;
       if (!textarea.value.trim()) {
-        showToast("Comment cannot be empty or just spaces.", "text-bg-danger");
+        showToast("Comment cannot be empty or just spaces.","text-bg-danger");
         textarea.focus();
         return;
       }
@@ -69,8 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const data = await res.json();
         if (!res.ok) {
-          showToast(res.statusText || "Something went wrong", "text-bg-danger");
-          throw new Error(`HTTP error ${res.statusText || "Something went wrong"}`);
+          showToast(data.error || "Something went wrong","text-bg-danger");
+          throw new Error(`HTTP error ${data.error || "Something went wrong"}`);
         } else {
           const noCommentsElement = document.getElementById("no-comments");
           if (noCommentsElement) {
@@ -170,10 +163,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // reset the comment textarea
           this.reset();
-          showToast("You have commented on this car post", "text-bg-success");
         }
       } catch (error) {
-        showToast(error, "text-bg-danger");
+        showToast(error,"text-bg-danger");
         console.error("Error:", error);
       }
     });
@@ -238,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const parent = document.getElementById(`comment-content-${commentId}`);
     const newContent = parent.querySelector(".edit-input").value;
     if (!newContent || newContent.trim() === "") {
-      showToast("can not save empty string", "text-bg-danger");
+      showToast("cannot save empty string","text-bg-danger");
       return;
     }
     const formData = new FormData();
@@ -255,8 +247,8 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const data = await res.json();
       if (!res.ok) {
-        showToast(res.statusText || "Something went wrong", "text-bg-danger");
-        throw new Error(`HTTP error ${res.statusText || "Something went wrong"}`);
+        showToast(data.error || "Something went wrong","text-bg-danger");
+        throw new Error(`HTTP error ${data.error || "Something went wrong"}`);
       } else {
         const newContent = `${data.content}<br>
         <small class="comment-time">
@@ -306,32 +298,35 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             closeModal();
-            showToast(
-              `Couldn't delete the comment, ${res.statusText}`,
-              "text-bg-danger"
-            );
+            showToast(`Couldn't delete the comment, ${res.statusText}`, "text-bg-danger");
             throw new Error(`HTTP error ${res.status}`);
           }
           return res.json();
         })
         .then((data) => {
-          // remove comment from comments list
-          document.getElementById(`comment-${selectedCommentId}`).remove(false);
-          // reduce number of comments after deleting
-          const comments = document.querySelectorAll(".comment");
-          const commentsCount = document.getElementById("comments-count");
-          commentsCount.innerText = `( ${comments.length} comments)`;
-          if (comments.length === 0) {
-            const commentsList = document.getElementById("comments-list");
-            commentsList.innerHTML = `<span id="no-comments">No Comments</span>`;
+          if (data.success) {
+            // remove comment from comments list
+            document
+              .getElementById(`comment-${selectedCommentId}`)
+              .remove(false);
+            // reduce number of comments after deleting
+            const comments = document.querySelectorAll(".comment");
+            const commentsCount = document.getElementById("comments-count");
+            commentsCount.innerText = `( ${comments.length} comments)`;
+            if (comments.length === 0) {
+              const commentsList = document.getElementById("comments-list");
+              commentsList.innerHTML = `<span id="no-comments">No Comments</span>`;
+            }
+            // closeModal
+            closeModal();
+            // show success message
+            showToast("Comment deleted successfully!","text-bg-success");
+          } else {
+            showToast("Error deleting comment","text-bg-danger");
           }
-          // closeModal
-          closeModal();
-          // show success message
-          showToast("Comment deleted successfully!", "text-bg-success");
         })
         .catch((error) => {
-          showToast(error, "text-bg-danger");
+          showToast(error,"text-bg-danger");
           console.error("Error:", error);
         })
         .finally(() => {
@@ -340,9 +335,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   /**
-   *  show message as a bootstrap toast
+   *  show success message as a bootstrap toast
    *  */
-  function showToast(message, bgColorClass) {
+  function showToast(message) {
     const toastEl = document.getElementById("message-toast");
 
     // Get the current scroll position and viewport size

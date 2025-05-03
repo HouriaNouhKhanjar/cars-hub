@@ -215,6 +215,11 @@ class CarCreateView(LoginRequiredMixin, CreateView):
             )
         return response
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['edit_mode'] = False
+        return context
+
 
 class CarUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
     """

@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             closeModal();
-            alert(`Couldn't delete the image, ${res.statusText}`);
+            showToast(`Couldn't delete the image, ${res.statusText}`);
             throw new Error(`HTTP error ${res.status}`);
           }
           return res.json();
@@ -41,12 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
               .remove(false);
             closeModal();
             // show success message
-            showToast("Image deleted successfully!");
+            showToast("Image deleted successfully!", "text-bg-success");
           } else {
-            alert("Error deleting image");
+            showToast("Error deleting image", "text-bg-danger");
           }
         })
         .catch((error) => {
+          showToast("Error deleting image", "text-bg-danger");
           console.error("Error:", error);
         })
         .finally(() => {
@@ -138,15 +139,34 @@ document.addEventListener("DOMContentLoaded", function () {
     input.files = fileBuffer.files;
   }
 
-  // show success message as a bootstrap toast
-  function showToast(message) {
+  // show message as a bootstrap toast
+  function showToast(message, bgColorClass) {
+    const toastEl = document.getElementById('message-toast');
+
+    // Get the current scroll position and viewport size
+    const scrollTop = window.scrollY;
+    const viewportHeight = window.innerHeight;
+    const toastHeight = toastEl.offsetHeight;
+
+    // Position: center of the visible viewport
+    toastEl.style.top = `${scrollTop + (viewportHeight - toastHeight) / 2}px`;
+    toastEl.style.right = `5%`;
+    
+    // Add bg color class
+    toastEl.classList.forEach(cls => {
+      if (cls.startsWith("text-bg-")) {
+        toastEl.classList.remove(cls);
+      }
+    });
+    toastEl.classList.add(bgColorClass);
+
+    // Display the message
     const content = document.querySelector(
-      "#message-toast .response-toast .toast-body"
+      "#message-toast .toast-body"
     );
     content.innerText = message;
     const btoast = bootstrap.Toast.getOrCreateInstance(
-      document.querySelector("#message-toast .response-toast"),
-      { delay: 4500 }
+      toastEl, { delay: 4500 }
     );
     btoast.show();
     setTimeout(() => btoast.hide(), 5000);

@@ -34,7 +34,8 @@
                 <form method="GET" class="row g-3 align-items-end">
                     <div class="col-md-9">
                         <input type="text" name="search" value="{{ search }}" class="form-control"
-                            placeholder="Search by title or brand or model">
+                            placeholder="Search by title or brand or model"
+                            pattern="\S+" title="No spaces allowed">
                     </div>
                     <div class="col-md-3">
                         <button type="submit" class="btn action-button-accent w-100">Search</button>

@@ -4,7 +4,7 @@
 
 {% block profile_content %}
 <div class="container my-4">
-    <h2>Add New Car</h2>
+    <h2>{% if edit_mode %} Edit {% else %} Add New {% endif %} Car</h2>
     {% if form.title.errors %}
     <div class="text-danger">
         {{ form.title.errors.as_text }}
