@@ -11,7 +11,7 @@ entities_detailed = {
     ],
     "UserProfile": [
         "UserProfileID (PK, INT)", "UserID (FK, INT)",
-        "Phone (VARCHAR)", "ProfileImageURL (TEXT)",
+        "Phone (VARCHAR)", "ProfileImageURL (Filefield)",
         "CreatedDate (DATETIME)"
     ],
     "Car": [
@@ -28,17 +28,17 @@ entities_detailed = {
     ],
     "Car_Category": [
         "CategoryID (PK, INT)", "CategoryName (VARCHAR)",
-        "ImageURL (TEXT)", "CreatedDate (DATETIME)"
+        "ImageURL (Filefield)", "CreatedDate (DATETIME)"
     ],
     "Car_Images": [
-        "ImageID (PK, INT)", "CarID (FK, INT)", "ImageURL (TEXT)"
+        "ImageID (PK, INT)", "CarID (FK, INT)", "ImageURL (Filefield)"
     ],
     "Inquiry": [
         "InquiryID (PK, INT)", "Email (VARCHAR)", "Name (VARCHAR)",
         "Message (TEXT)", "Read (INT)", "CreatedDate (DATETIME)"
     ],
     "About": [
-        "AboutID (PK, INT)", "Description (TEXT)", "ImageURL (TEXT)", 
+        "AboutID (PK, INT)", "Description (TEXT)", "ImageURL (Filefield)",
         "UpdatedDate (DATETIME)"
     ]
 }
