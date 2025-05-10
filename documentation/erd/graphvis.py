@@ -65,4 +65,3 @@ for src, dst in relations_detailed:
 
 # Save ERD as PNG image
 erd_detailed.render('cars_hub_erd', format='png', cleanup=False)
-

@@ -5,7 +5,7 @@ The `urlpatterns` list routes URLs to views.
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.urls import path, include
-from errors import views as error_views  # adjust to your app name
+from errors import views as error_views
 
 handler400 = error_views.error_400
 handler403 = error_views.error_403

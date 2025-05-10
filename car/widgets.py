@@ -14,7 +14,6 @@ class DragAndDropWidget(ClearableFileInput):
 
     def render(self, name, value, attrs=None, renderer=None):
         input_html = super().render(name, value, attrs)
-        
         preview_html = ''
         if value and hasattr(value, 'url'):
             preview_html = f'''

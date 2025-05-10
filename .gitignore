@@ -10,3 +10,13 @@ cloudinary_python.txt
 venv/
 .env/
 **/site-packages/
+# Coverage reports
+coverage/
+htmlcov/
+*.cover
+*.coverage
+*.cov
+*.gcov
+.cache/
+nosetests.xml
+coverage.xml
